@@ -6,5 +6,4 @@ public class Main{
 		Fenster f = new Fenster(800, 500, Color.GREEN, true, false);
 		f.openWindow();
 	}
-	
 }
