@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 public class Fenster {
 
@@ -20,6 +21,7 @@ public class Fenster {
 		backgroundColor = Color.BLACK;
 		centered = true;
 		fenster = new JFrame();
+		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setFullScreen(true);
 	}
 
@@ -30,6 +32,7 @@ public class Fenster {
 		setCentered(centered);
 		setFullScreen(fullScreen);
 		fenster = new JFrame();
+		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 	
 	public boolean getFullScreen() {
@@ -100,12 +103,6 @@ public class Fenster {
 	private int getScreenHeight() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		return (int) screenSize.getHeight();
-	}
-
-	public void closeWindow() {
-		if(fenster.isVisible()) {
-			fenster.setVisible(false);
-		}
 	}
 	
 	public void addJLabel(JLabel jlabel) {
