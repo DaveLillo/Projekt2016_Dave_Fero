@@ -85,28 +85,12 @@ public class Menu implements ActionListener {
 		this.centered = centered;
 	}
 
-	public void openWindow(Color c) {
-		fenster = new JFrame("Asteroids");
-		fenster.getContentPane().setBackground(c);
-		fenster.setCursor(new Cursor(1));
-		if (width == 0) {
-			width = getScreenWidth() * 10 / 9;
-		}
-		if (height == 0) {
-			height = getScreenHeight() * 10 / 9;
-		}
-		fenster.setSize(width, height);
-		if (centered) {
-			fenster.setLocationRelativeTo(null);
-		}
-		if (fullScreen) {
-			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		}
+	public void addButtons(Color c) {
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.setSize(200, fenster.getY());
-		buttonPanel.setLocation(800, fenster.getY());
+		buttonPanel.setSize(fenster.getY(),200);
+		buttonPanel.setLocation(fenster.getX(), 800);
 		buttonPanel.setBackground(Color.BLACK);
 		/*
 		 * Actionlistener
@@ -117,8 +101,9 @@ public class Menu implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Fenster f = new Fenster(0, 0, Color.WHITE, true, true);
-				f.addJLabel(new JLabel("Servas"));
+				f.addJLabel(new JLabel("Servas"));				
 				f.openWindow();
+				
 			}
 		};
 		ActionListener a = new ActionListener() {
@@ -136,8 +121,8 @@ public class Menu implements ActionListener {
 		buttonStart.setBackground(Color.BLACK);
 		buttonStart.setText("Start");
 		buttonStart.setForeground(Color.WHITE);
-		buttonStart.setSize(200, 50);
-
+		buttonStart.setSize(500, 200);
+		buttonStart.addActionListener(start);
 		buttonPanel.add(buttonStart);
 		/*
 		 * Exit-Button
