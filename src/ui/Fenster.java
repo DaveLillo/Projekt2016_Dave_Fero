@@ -1,4 +1,5 @@
 package ui;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -36,11 +37,11 @@ public class Fenster {
 		fenster = new JFrame();
 		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
-	
+
 	public boolean getFullScreen() {
 		return fullScreen;
 	}
-	
+
 	public void setFullScreen(boolean fullScreen) {
 		this.fullScreen = fullScreen;
 	}
@@ -88,11 +89,11 @@ public class Fenster {
 			height = getScreenHeight() * 10 / 9;
 		}
 		fenster.setSize(width, height);
-		if(centered) {
+		if (centered) {
 			fenster.setLocationRelativeTo(null);
 		}
-		if(fullScreen) {
-			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		if (fullScreen) {
+			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
 		fenster.setVisible(true);
 	}
@@ -106,7 +107,7 @@ public class Fenster {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		return (int) screenSize.getHeight();
 	}
-	
+
 	public void addJLabel(JLabel jlabel) {
 		fenster.add(jlabel);
 	}

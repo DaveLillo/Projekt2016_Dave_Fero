@@ -10,6 +10,6 @@ public class Main {
 		f.openWindow();
 		Menu m = new Menu();
 		m.addButtons(Color.BLACK);
-		
+
 	}
 }
