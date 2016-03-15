@@ -78,7 +78,7 @@ public class Fenster {
 		this.centered = centered;
 	}
 
-	public void openWindow() {
+	public JFrame openWindow() {
 		fenster = new JFrame("JFrame");
 		fenster.getContentPane().setBackground(backgroundColor);
 		fenster.setCursor(new Cursor(1));
@@ -96,6 +96,7 @@ public class Fenster {
 			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
 		fenster.setVisible(true);
+		return fenster;
 	}
 
 	private int getScreenWidth() {
