@@ -1,3 +1,4 @@
+package spiel;
 
 public class Schiff extends Wesen {
 

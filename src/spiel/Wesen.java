@@ -1,3 +1,4 @@
+package spiel;
 
 public abstract class Wesen {
 
