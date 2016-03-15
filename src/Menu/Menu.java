@@ -1,4 +1,6 @@
 package Menu;
+
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -6,13 +8,16 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class Menu implements ActionListener{
+import ui.Fenster;
+
+public class Menu implements ActionListener {
 
 	private int height;
 	private int width;
@@ -39,11 +44,11 @@ public class Menu implements ActionListener{
 		fenster = new JFrame();
 		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
-	
+
 	public boolean getFullScreen() {
 		return fullScreen;
 	}
-	
+
 	public void setFullScreen(boolean fullScreen) {
 		this.fullScreen = fullScreen;
 	}
@@ -91,38 +96,39 @@ public class Menu implements ActionListener{
 			height = getScreenHeight() * 10 / 9;
 		}
 		fenster.setSize(width, height);
-		if(centered) {
+		if (centered) {
 			fenster.setLocationRelativeTo(null);
 		}
-		if(fullScreen) {
-			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		if (fullScreen) {
+			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
-		
+
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.setSize(200,fenster.getY());
-		buttonPanel.setLocation(800,fenster.getY());
+		buttonPanel.setSize(200, fenster.getY());
+		buttonPanel.setLocation(800, fenster.getY());
 		buttonPanel.setBackground(Color.BLACK);
 		/*
 		 * Actionlistener
 		 */
 		ActionListener start = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-						
+				Fenster f = new Fenster(0, 0, Color.WHITE, true, true);
+				f.addJLabel(new JLabel("Servas"));
+				f.openWindow();
 			}
 		};
 		ActionListener a = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				System.exit(0);
 			}
-		};		
+		};
 		/*
 		 * Start-Button
 		 */
@@ -130,8 +136,8 @@ public class Menu implements ActionListener{
 		buttonStart.setBackground(Color.BLACK);
 		buttonStart.setText("Start");
 		buttonStart.setForeground(Color.WHITE);
-		buttonStart.setSize(200,50);
-		
+		buttonStart.setSize(200, 50);
+
 		buttonPanel.add(buttonStart);
 		/*
 		 * Exit-Button
@@ -140,10 +146,10 @@ public class Menu implements ActionListener{
 		buttonExit.setBackground(Color.BLACK);
 		buttonExit.setText("Exit");
 		buttonExit.setForeground(Color.WHITE);
-		buttonExit.setSize(200,50);
+		buttonExit.setSize(200, 50);
 		buttonExit.addActionListener(a);
 		buttonPanel.add(buttonExit);
-		
+
 		fenster.add(buttonPanel);
 		fenster.setVisible(true);
 	}
@@ -157,7 +163,7 @@ public class Menu implements ActionListener{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		return (int) screenSize.getHeight();
 	}
-	
+
 	public void addJLabel(JLabel jlabel) {
 		fenster.add(jlabel);
 	}
@@ -165,7 +171,7 @@ public class Menu implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
