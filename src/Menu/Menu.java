@@ -7,11 +7,14 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import ui.Fenster;
 
 public class Menu implements ActionListener {
 
@@ -103,12 +106,16 @@ public class Menu implements ActionListener {
 		buttonPanel.setSize(200, fenster.getY());
 		buttonPanel.setLocation(800, fenster.getY());
 		buttonPanel.setBackground(Color.BLACK);
-		new ActionListener() {
+		/*
+		 * Actionlistener
+		 */
+		ActionListener start = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				Fenster f = new Fenster(0, 0, Color.WHITE, true, true);
+				f.addJLabel(new JLabel("Servas"));
+				f.openWindow();
 			}
 		};
 		ActionListener a = new ActionListener() {
@@ -127,6 +134,7 @@ public class Menu implements ActionListener {
 		buttonStart.setText("Start");
 		buttonStart.setForeground(Color.WHITE);
 		buttonStart.setSize(200, 50);
+		buttonStart.addActionListener(start);
 
 		buttonPanel.add(buttonStart);
 		/*

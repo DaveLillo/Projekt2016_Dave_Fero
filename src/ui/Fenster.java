@@ -22,6 +22,7 @@ public class Fenster {
 		backgroundColor = Color.BLACK;
 		centered = true;
 		fenster = new JFrame("Asteroids");
+		fenster = new JFrame();
 		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setFullScreen(true);
 	}
