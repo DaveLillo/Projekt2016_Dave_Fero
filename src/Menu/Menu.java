@@ -1,5 +1,5 @@
-package Menu;
 
+package Menu;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -25,7 +25,6 @@ public class Menu implements ActionListener {
 	private boolean centered, fullScreen;
 	private JFrame fenster;
 	private JButton buttonStart;
-	private JButton buttonOptions;
 	private JButton buttonExit;
 
 	public Menu() {
@@ -86,10 +85,26 @@ public class Menu implements ActionListener {
 	}
 
 	public void addButtons(Color c) {
+		fenster = new JFrame("Asteroids");
+		fenster.getContentPane().setBackground(c);
+		fenster.setCursor(new Cursor(1));
+		if (width == 0) {
+			width = getScreenWidth() * 10 / 9;
+		}
+		if (height == 0) {
+			height = getScreenHeight() * 10 / 9;
+		}
+		fenster.setSize(width, height);
+		if (centered) {
+			fenster.setLocationRelativeTo(null);
+		}
+		if (fullScreen) {
+			fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.setSize(fenster.getY(),200);
+		buttonPanel.setSize(fenster.getY(), 200);
 		buttonPanel.setLocation(fenster.getX(), 800);
 		buttonPanel.setBackground(Color.BLACK);
 		/*
@@ -99,11 +114,9 @@ public class Menu implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				Fenster f = new Fenster(0, 0, Color.WHITE, true, true);
-				f.addJLabel(new JLabel("Servas"));				
+				f.addJLabel(new JLabel("Servas"));
 				f.openWindow();
-				
 			}
 		};
 		ActionListener a = new ActionListener() {
