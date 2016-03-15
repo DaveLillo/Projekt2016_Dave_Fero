@@ -1,3 +1,4 @@
+package ui;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -20,7 +21,7 @@ public class Fenster {
 		width = getScreenWidth();
 		backgroundColor = Color.BLACK;
 		centered = true;
-		fenster = new JFrame();
+		fenster = new JFrame("Asteroids");
 		fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setFullScreen(true);
 	}

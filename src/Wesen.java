@@ -1,12 +1,12 @@
 
 public abstract class Wesen {
-	
+
 	private int hp;
 	private int dmg;
 	private double speed;
 	public static final int PROJECTILE_SPEED = 10;
-	
-	public Wesen (int hp, int dmg, double speed) {
+
+	public Wesen(int hp, int dmg, double speed) {
 		setHp(hp);
 		setDmg(dmg);
 		setSpeed(speed);
@@ -35,14 +35,14 @@ public abstract class Wesen {
 	private void setSpeed(double speed) {
 		this.speed = speed;
 	}
-	
+
 	/**
 	 * 
 	 * @param amount
 	 * @return true wenn Wesen stirbt
 	 */
 	public boolean getDmg(int amount) {
-		if(hp - amount <= 0) {
+		if (hp - amount <= 0) {
 			setHp(0);
 			return true;
 		}
