@@ -1,7 +1,9 @@
 
 package Menu;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +16,6 @@ import javax.swing.JPanel;
 import ui.Fenster;
 
 public class Menu implements ActionListener {
-
-	private JFrame fenster;
 	private JButton buttonStart;
 	private JButton buttonExit;
 
@@ -25,26 +25,26 @@ public class Menu implements ActionListener {
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.setSize(fenster.getY(), 200);
-		buttonPanel.setLocation(fenster.getX(), 800);
+		buttonPanel.setSize(fenster.getX(), 200);
+		buttonPanel.setBounds(0, 800, fenster.getX(), 200);
+		;
 		buttonPanel.setBackground(Color.BLACK);
 		/*
 		 * Actionlistener
 		 */
 		ActionListener start = new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				Fenster f = new Fenster(0, 0, Color.WHITE, true, true);
+				Fenster f = new Fenster(800, 600, Color.BLACK, true, false);
 				f.addJLabel(new JLabel("Servas"));
+				fenster.hide();
 				f.openWindow();
 			}
 		};
-		ActionListener a = new ActionListener() {
+		ActionListener exit = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				System.exit(0);
 			}
 		};
@@ -55,7 +55,7 @@ public class Menu implements ActionListener {
 		buttonStart.setBackground(Color.BLACK);
 		buttonStart.setText("Start");
 		buttonStart.setForeground(Color.WHITE);
-		buttonStart.setSize(500, 200);
+		buttonStart.setPreferredSize(new Dimension(400, 100));
 		buttonStart.addActionListener(start);
 		buttonPanel.add(buttonStart);
 		/*
@@ -65,11 +65,11 @@ public class Menu implements ActionListener {
 		buttonExit.setBackground(Color.BLACK);
 		buttonExit.setText("Exit");
 		buttonExit.setForeground(Color.WHITE);
-		buttonExit.setSize(200, 50);
-		buttonExit.addActionListener(a);
+		buttonExit.setPreferredSize(new Dimension(400, 100));
+		buttonExit.addActionListener(exit);
 		buttonPanel.add(buttonExit);
+		fenster.add(buttonPanel, BorderLayout.SOUTH);
 
-		fenster.add(buttonPanel);
 		fenster.setVisible(true);
 	}
 

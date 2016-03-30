@@ -1,4 +1,5 @@
 package spiel;
+
 import java.awt.Color;
 
 import Menu.Menu;
@@ -8,7 +9,6 @@ public class Main {
 
 	public static void main(String args[]) {
 		Fenster f = new Fenster();
-		f.openWindow();
 		Menu m = new Menu();
 		m.addButtons(Color.BLACK);
 

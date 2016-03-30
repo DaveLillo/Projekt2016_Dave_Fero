@@ -18,8 +18,8 @@ public class Fenster {
 	private JFrame fenster;
 
 	public Fenster() {
-		height = getScreenHeight();
-		width = getScreenWidth();
+		height = 600;
+		width = 800;
 		backgroundColor = Color.BLACK;
 		centered = true;
 		fenster = new JFrame("Asteroids");
@@ -83,7 +83,7 @@ public class Fenster {
 		fenster.getContentPane().setBackground(backgroundColor);
 		fenster.setCursor(new Cursor(1));
 		if (width == 0) {
-			width = getScreenWidth() * 10 / 9;
+			width = getScreenWidth() * 2;
 		}
 		if (height == 0) {
 			height = getScreenHeight() * 10 / 9;
