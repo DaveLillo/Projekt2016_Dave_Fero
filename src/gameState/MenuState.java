@@ -3,16 +3,15 @@ package gameState;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import handlers.Keys;
 import spiel.GamePanel;
 
-public class MenuState extends GameState implements KeyListener {
+public class MenuState extends GameState {
 
 	private BufferedImage head;
 
@@ -27,8 +26,6 @@ public class MenuState extends GameState implements KeyListener {
 
 	private BufferedImage image;
 
-	private KeyEvent keyEvent;
-
 	public MenuState(GameStateManager gsm) {
 
 		super(gsm);
@@ -36,9 +33,7 @@ public class MenuState extends GameState implements KeyListener {
 		try {
 
 			// load floating head
-			// head =
-			// ImageIO.read(getClass().getResourceAsStream("/HUD/Hud.gif")).getSubimage(0,
-			// 12, 12, 11);
+			head = ImageIO.read(getClass().getResourceAsStream("/HUD/Hud.gif"));
 
 			// titles and fonts
 			titleColor = Color.WHITE;
@@ -62,7 +57,7 @@ public class MenuState extends GameState implements KeyListener {
 	}
 
 	public void update() {
-
+		handleInput();
 	}
 
 	public void draw(Graphics2D g) {
@@ -81,6 +76,7 @@ public class MenuState extends GameState implements KeyListener {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
+
 		g.drawString("A S T E R O I D S", 55, 50);
 
 		// draw menu options
@@ -113,33 +109,19 @@ public class MenuState extends GameState implements KeyListener {
 	}
 
 	public void handleInput() {
-		if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
+		if (Keys.isPressed(Keys.ENTER))
 			select();
-		if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
+		if (Keys.isPressed(Keys.UP)) {
 			if (currentChoice > 0) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice--;
 			}
 		}
-		if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+		if (Keys.isPressed(Keys.DOWN)) {
 			if (currentChoice < options.length - 1) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice++;
 			}
 		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		keyEvent = e;
-		handleInput();
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
 	}
 }
