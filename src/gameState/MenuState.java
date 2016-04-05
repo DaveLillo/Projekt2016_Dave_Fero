@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import spiel.GamePanel;
 
@@ -21,6 +24,8 @@ public class MenuState extends GameState implements KeyListener {
 
 	private Font font;
 	private Font font2;
+
+	private BufferedImage image;
 
 	private KeyEvent keyEvent;
 
@@ -61,7 +66,14 @@ public class MenuState extends GameState implements KeyListener {
 	}
 
 	public void draw(Graphics2D g) {
-
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/HyperDriveShip.gif")).getSubimage(0, 12,
+					12, 11);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		g.drawImage(image, GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE, null);
 		// draw bg
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
@@ -69,13 +81,13 @@ public class MenuState extends GameState implements KeyListener {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("A S T E R O I D S", 70, 90);
+		g.drawString("A S T E R O I D S", 55, 50);
 
 		// draw menu options
 		g.setFont(font);
 		g.setColor(Color.WHITE);
-		g.drawString("Start", 145, 165);
-		g.drawString("Quit", 145, 185);
+		g.drawString("Start", 80, 200);
+		g.drawString("Quit", 200, 200);
 
 		// draw floating head
 		if (currentChoice == 0)
