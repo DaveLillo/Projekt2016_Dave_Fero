@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -61,13 +60,6 @@ public class MenuState extends GameState {
 	}
 
 	public void draw(Graphics2D g) {
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/HyperDriveShip.gif")).getSubimage(0, 12,
-					12, 11);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		g.drawImage(image, GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE, null);
 		// draw bg
 		g.setColor(Color.BLACK);
@@ -107,7 +99,7 @@ public class MenuState extends GameState {
 			// gsm.setState(GameStateManager.LEVEL1ASTATE);
 			System.out.println("Start");
 		} else if (currentChoice == 1) {
-			System.out.println("Right key and Left key");
+			// hier kommt noch ein png mit keys.
 		} else if (currentChoice == 2)
 			System.exit(0);
 	}
