@@ -34,6 +34,7 @@ public class MenuState extends GameState {
 			// load floating head
 			head = ImageIO.read(getClass().getResourceAsStream("/HUD/Hud.gif"));
 
+			image = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/HyperDriveShip.gif"));
 			// titles and fonts
 			titleColor = Color.WHITE;
 			titleFont = new Font("Times New Roman", Font.PLAIN, 28);
@@ -60,7 +61,6 @@ public class MenuState extends GameState {
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(image, GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE, null);
 		// draw bg
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
@@ -68,6 +68,9 @@ public class MenuState extends GameState {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
+
+		// gif background
+		g.drawImage(image, 8, 40, null);
 
 		g.drawString("A S T E R O I D S", 55, 50);
 
@@ -81,9 +84,9 @@ public class MenuState extends GameState {
 		// draw floating head
 		if (currentChoice == 0)
 			g.drawImage(head, 51, 165, null);
-		else if (currentChoice == 1)
+		else if (currentChoice == 1) {
 			g.drawImage(head, 144, 165, null);
-		else if (currentChoice == 2)
+		} else if (currentChoice == 2)
 			g.drawImage(head, 233, 165, null);
 
 		// other
@@ -93,13 +96,14 @@ public class MenuState extends GameState {
 	}
 
 	private void select() {
+
 		if (currentChoice == 0) {
 			// JukeBox.play("menuselect");
 			// PlayerSave.init();
 			// gsm.setState(GameStateManager.LEVEL1ASTATE);
 			System.out.println("Start");
 		} else if (currentChoice == 1) {
-			// hier kommt noch ein png mit keys.
+
 		} else if (currentChoice == 2)
 			System.exit(0);
 	}
