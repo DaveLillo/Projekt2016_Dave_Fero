@@ -17,6 +17,7 @@ public class GameStateManager {
 	 * LEVEL1BSTATE = 3; public static final int LEVEL1CSTATE = 4; public static
 	 * final int ACIDSTATE = 15;
 	 */
+	public static final int LEVEL1STATE = 2;
 
 	public GameStateManager() {
 
@@ -35,12 +36,13 @@ public class GameStateManager {
 	private void loadState(int state) {
 		if (state == MENUSTATE)
 			gameStates[state] = new MenuState(this);
+		else if (state == LEVEL1STATE)
+			gameStates[state] = new Level1State(this);
 		/*
-		 * else if(state == LEVEL1ASTATE) gameStates[state] = new
-		 * Level1AState(this); else if(state == LEVEL1BSTATE) gameStates[state]
-		 * = new Level1BState(this); else if(state == LEVEL1CSTATE)
-		 * gameStates[state] = new Level1CState(this); else if(state ==
-		 * ACIDSTATE) gameStates[state] = new AcidState(this);
+		 * else if(state == LEVEL1BSTATE) gameStates[state] = new
+		 * Level1BState(this); else if(state == LEVEL1CSTATE) gameStates[state]
+		 * = new Level1CState(this); else if(state == ACIDSTATE)
+		 * gameStates[state] = new AcidState(this);
 		 */
 	}
 

@@ -100,8 +100,7 @@ public class MenuState extends GameState {
 		if (currentChoice == 0) {
 			// JukeBox.play("menuselect");
 			// PlayerSave.init();
-			// gsm.setState(GameStateManager.LEVEL1ASTATE);
-			System.out.println("Start");
+			gsm.setState(GameStateManager.LEVEL1STATE);
 		} else if (currentChoice == 1) {
 
 		} else if (currentChoice == 2)

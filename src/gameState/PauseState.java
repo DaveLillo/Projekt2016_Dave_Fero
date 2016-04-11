@@ -3,15 +3,13 @@ package gameState;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
+import handlers.Keys;
 import spiel.GamePanel;
 
-public class PauseState extends GameState implements KeyListener {
+public class PauseState extends GameState {
 
 	private Font font;
-	private KeyEvent keyEvent;
 
 	public PauseState(GameStateManager gsm) {
 		super(gsm);
@@ -40,22 +38,11 @@ public class PauseState extends GameState implements KeyListener {
 
 	@Override
 	public void handleInput() {
-		if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		if (Keys.isPressed(Keys.ESCAPE))
 			gsm.setPaused(false);
+		if (Keys.isPressed(Keys.BUTTON1)) {
+			gsm.setPaused(false);
+			gsm.setState(GameStateManager.MENUSTATE);
 		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		handleInput();
-		keyEvent = e;
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
 	}
 }

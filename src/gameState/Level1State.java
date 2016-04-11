@@ -1,0 +1,235 @@
+package gameState;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+import entity.Enemy;
+import entity.EnergyParticle;
+import entity.Explosion;
+import entity.Player;
+import handlers.Background;
+import handlers.Keys;
+import spiel.GamePanel;
+import tileMap.TileMap;
+
+public class Level1State extends GameState {
+
+	private Background stars;
+
+	private Player player;
+	private TileMap tileMap;
+	private ArrayList<Enemy> enemies;
+	private ArrayList<EnemyProjectile> eprojectiles;
+	private ArrayList<EnergyParticle> energyParticles;
+	private ArrayList<Explosion> explosions;
+
+	private boolean blockInput = false;
+	private int eventCount = 0;
+	private boolean eventStart;
+	private ArrayList<Rectangle> tb;
+	private boolean eventFinish;
+	private boolean eventDead;
+
+	public Level1State(GameStateManager gsm) {
+		super(gsm);
+		init();
+	}
+
+	public void init() {
+		stars = new Background("/Backgrounds/stars.gif", 0);
+
+		tileMap = new TileMap(30);
+		tileMap.loadTiles("/tilesets/empty.gif");
+		tileMap.loadMap("/Maps/empty.map");
+		tileMap.setPosition(140, 0);
+		tileMap.setBounds(tileMap.getWidth() - 1 * tileMap.getTileSize(),
+				tileMap.getHeight() - 2 * tileMap.getTileSize(), 0, 0);
+		tileMap.setTween(1);
+
+		player = new Player(tileMap);
+		player.setPosition(GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE);
+		player.setHealth(1);
+		player.setLives(3);
+		player.setTime(0);
+
+		enemies = new ArrayList<Enemy>();
+		eprojectiles = new ArrayList<EnemyProjectile>();
+		populateEnemies();
+
+		energyParticles = new ArrayList<EnergyParticle>();
+
+		player.init(enemies, energyParticles);
+		explosions = new ArrayList<Explosion>();
+
+		eventStart = true;
+		tb = new ArrayList<Rectangle>();
+		eventStart();
+
+		// sfx + music
+	}
+
+	private void populateEnemies() {
+		// Objekte erzeugen und Position setzen.
+	}
+
+	public void update() {
+		handleInput();
+
+		if (player.getHealth() == 1 || player.getY > tileMap.getHeight()) {
+			eventDead = blockInput = true;
+		}
+
+		if (eventStart)
+			eventStart();
+		if (eventDead)
+			eventDead();
+		if (eventFinish)
+			eventFinish();
+
+		player.update();
+
+		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
+		tileMap.update();
+		tileMap.fixBounds();
+
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			e.update();
+			if (e.isDead()) {
+				enemies.remove(i);
+				i--;
+				explosions.add(new Explosion(tileMap, e.getx(), e.gety()));
+			}
+		}
+
+		for (int i = 0; i < eprojectiles.size(); i++) {
+			EnemyProjectile ep = eprojectiles.get(i);
+			ep.update();
+			if (ep.shouldRemove()) {
+				eprojectiles.remove(i);
+				i--;
+			}
+		}
+	}
+
+	public void draw(Graphics2D g) {
+		stars.draw(g);
+
+		tileMap.draw(g);
+
+		for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).draw(g);
+		}
+
+		for (int i = 0; i < eprojectiles.size(); i++) {
+			eprojectiles.get(i).draw(g);
+		}
+
+		for (int i = 0; i < explosions.size(); i++) {
+			explosions.get(i).draw(g);
+		}
+
+		player.draw(g);
+
+		g.setColor(Color.BLACK);
+		for (int i = 0; i < tb.size(); i++) {
+			g.fill(tb.get(i));
+		}
+	}
+
+	public void handleInput() {
+		if (Keys.isPressed(Keys.ESCAPE))
+			gsm.setPaused(true);
+		if (blockInput || player.getHealth() == 0)
+			return;
+		player.setUp(Keys.keyState[Keys.UP]);
+		player.setLeft(Keys.keyState[Keys.LEFT]);
+		player.setDown(Keys.keyState[Keys.DOWN]);
+		player.setRight(Keys.keyState[Keys.RIGHT]);
+	}
+
+	private void reset() {
+		player.reset();
+		player.setPosition(GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE);
+		populateEnemies();
+		blockInput = true;
+		eventCount = 0;
+		tileMap.setShaking(false, 0);
+		eventStart = true;
+		eventStart();
+	}
+
+	private void eventStart() {
+		eventCount++;
+		if (eventCount == 1) {
+			tb.clear();
+			tb.add(new Rectangle(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT / 2));
+			tb.add(new Rectangle(0, 0, GamePanel.WIDTH / 2, GamePanel.HEIGHT));
+			tb.add(new Rectangle(0, GamePanel.HEIGHT / 2, GamePanel.WIDTH, GamePanel.HEIGHT / 2));
+			tb.add(new Rectangle(GamePanel.WIDTH / 2, 0, GamePanel.WIDTH / 2, GamePanel.HEIGHT));
+		}
+
+		if (eventCount > 1 && eventCount < 60) {
+			tb.get(0).height -= 4;
+			tb.get(1).width -= 6;
+			tb.get(2).y += 4;
+			tb.get(3).x += 6;
+		}
+
+		if (eventCount == 60) {
+			eventStart = blockInput = false;
+			eventCount = 0;
+			tb.clear();
+		}
+	}
+
+	private void eventDead() {
+		eventCount++;
+		if (eventCount == 1) {
+			player.setDead();
+			player.stop();
+		}
+
+		if (eventCount == 60) {
+			tb.clear();
+			tb.add(new Rectangle(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2, 0, 0));
+		} else if (eventCount > 60) {
+			tb.get(0).x -= 6;
+			tb.get(0).y -= 4;
+			tb.get(0).width += 12;
+			tb.get(0).height += 8;
+		}
+
+		if (eventCount >= 120) {
+			if (player.getLives() == 0) {
+				gsm.setState(GameStateManager.MENUSTATE);
+			} else {
+				eventDead = blockInput = false;
+				eventCount = 0;
+				player.loseLife();
+				reset();
+			}
+		}
+	}
+
+	private void eventFinish() {
+		eventCount++;
+		if (eventCount == 1) {
+			player.stop();
+		} else if (eventCount == 120) {
+			tb.clear();
+			tb.add(new Rectangle(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2, 0, 0));
+		} else if (eventCount > 120) {
+			tb.get(0).x -= 6;
+			tb.get(0).y -= 4;
+			tb.get(0).width += 12;
+			tb.get(0).height += 8;
+		}
+
+		if (eventCount == 180) {
+			// save stats for next level
+		}
+	}
+}
