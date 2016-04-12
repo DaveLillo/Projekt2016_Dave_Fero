@@ -21,7 +21,7 @@ public class Level1State extends GameState {
 	private Player player;
 	private TileMap tileMap;
 	private ArrayList<Enemy> enemies;
-	private ArrayList<EnemyProjectile> eprojectiles;
+	// private ArrayList<EnemyProjectile> eprojectiles;
 	private ArrayList<EnergyParticle> energyParticles;
 	private ArrayList<Explosion> explosions;
 
@@ -41,8 +41,8 @@ public class Level1State extends GameState {
 		stars = new Background("/Backgrounds/stars.gif", 0);
 
 		tileMap = new TileMap(30);
-		tileMap.loadTiles("/tilesets/empty.gif");
-		tileMap.loadMap("/Maps/empty.map");
+		tileMap.loadTiles("/Tilesets/empty.gif");
+		// tileMap.loadMap("/Maps/empty.map");
 		tileMap.setPosition(140, 0);
 		tileMap.setBounds(tileMap.getWidth() - 1 * tileMap.getTileSize(),
 				tileMap.getHeight() - 2 * tileMap.getTileSize(), 0, 0);
@@ -55,7 +55,7 @@ public class Level1State extends GameState {
 		player.setTime(0);
 
 		enemies = new ArrayList<Enemy>();
-		eprojectiles = new ArrayList<EnemyProjectile>();
+		// eprojectiles = new ArrayList<EnemyProjectile>();
 		populateEnemies();
 
 		energyParticles = new ArrayList<EnergyParticle>();
@@ -77,7 +77,7 @@ public class Level1State extends GameState {
 	public void update() {
 		handleInput();
 
-		if (player.getHealth() == 1 || player.getY > tileMap.getHeight()) {
+		if (player.getHealth() == 1 || player.gety() > tileMap.getHeight()) {
 			eventDead = blockInput = true;
 		}
 
@@ -104,14 +104,11 @@ public class Level1State extends GameState {
 			}
 		}
 
-		for (int i = 0; i < eprojectiles.size(); i++) {
-			EnemyProjectile ep = eprojectiles.get(i);
-			ep.update();
-			if (ep.shouldRemove()) {
-				eprojectiles.remove(i);
-				i--;
-			}
-		}
+		/*
+		 * for (int i = 0; i < eprojectiles.size(); i++) { EnemyProjectile ep =
+		 * eprojectiles.get(i); ep.update(); if (ep.shouldRemove()) {
+		 * eprojectiles.remove(i); i--; } }
+		 */
 	}
 
 	public void draw(Graphics2D g) {
@@ -123,9 +120,10 @@ public class Level1State extends GameState {
 			enemies.get(i).draw(g);
 		}
 
-		for (int i = 0; i < eprojectiles.size(); i++) {
-			eprojectiles.get(i).draw(g);
-		}
+		/*
+		 * for (int i = 0; i < eprojectiles.size(); i++) {
+		 * eprojectiles.get(i).draw(g); }
+		 */
 
 		for (int i = 0; i < explosions.size(); i++) {
 			explosions.get(i).draw(g);
