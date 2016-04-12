@@ -78,7 +78,7 @@ public class Level1State extends GameState {
 		handleInput();
 
 		if (player.getHealth() == 1 || player.gety() > tileMap.getHeight()) {
-			eventDead = blockInput = true;
+			// eventDead = blockInput = true;
 		}
 
 		if (eventStart)
@@ -129,7 +129,7 @@ public class Level1State extends GameState {
 			explosions.get(i).draw(g);
 		}
 
-		player.draw(g);
+		// player.draw(g);
 
 		g.setColor(Color.BLACK);
 		for (int i = 0; i < tb.size(); i++) {

@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import spiel.GamePanel;
@@ -63,8 +64,8 @@ public abstract class MapObject {
 	public MapObject(TileMap tm) {
 		tileMap = tm;
 		tileSize = tm.getTileSize();
-		// animation = new Animation();
-		// facingRight = true;
+		animation = new Animation();
+		facingRight = true;
 	}
 
 	public boolean intersects(MapObject o) {
@@ -190,9 +191,9 @@ public abstract class MapObject {
 		return cheight;
 	}
 
-	/*
-	 * public boolean isFacingRight() { return facingRight; }
-	 */
+	public boolean isFacingRight() {
+		return facingRight;
+	}
 
 	public void setPosition(double x, double y) {
 		this.x = x;
@@ -234,14 +235,14 @@ public abstract class MapObject {
 				|| y + ymap - height > GamePanel.HEIGHT;
 	}
 
-	public void draw(java.awt.Graphics2D g) {
+	public void draw(Graphics2D g) {
 		setMapPosition();
-		/*
-		 * if (facingRight) { g.drawImage(animation.getImage(), (int) (x + xmap
-		 * - width / 2), (int) (y + ymap - height / 2), null); } else {
-		 * g.drawImage(animation.getImage(), (int) (x + xmap - width / 2 +
-		 * width), (int) (y + ymap - height / 2), -width, height, null); }
-		 */
+		if (facingRight) {
+			g.drawImage(animation.getImage(), (int) (x + xmap - width / 2), (int) (y + ymap - height / 2), null);
+		} else {
+			g.drawImage(animation.getImage(), (int) (x + xmap - width / 2 + width), (int) (y + ymap - height / 2),
+					-width, height, null);
+		}
 		// draw collision box
 		// Rectangle r = getRectangle();
 		// r.x += xmap;
