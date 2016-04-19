@@ -3,6 +3,7 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import handlers.Keys;
 import spiel.GamePanel;
 import tileMap.Tile;
 import tileMap.TileMap;
@@ -60,6 +61,8 @@ public abstract class MapObject {
 	protected double maxFallSpeed;
 	protected double jumpStart;
 	protected double stopJumpSpeed;
+
+	private int timertemp = 0;
 
 	public MapObject(TileMap tm) {
 		tileMap = tm;
@@ -206,8 +209,26 @@ public abstract class MapObject {
 	}
 
 	public void setMapPosition() {
-		xmap = tileMap.getx();
-		ymap = tileMap.gety();
+		if (Keys.isPressed(Keys.LEFT)) {
+			if (x - 10 < 0) {
+				x = 0;
+			} else {
+				x -= 10;
+			}
+		}
+		if (Keys.isPressed(Keys.RIGHT)) {
+			if (x + 10 > GamePanel.WIDTH * GamePanel.SCALE) {
+				x = GamePanel.WIDTH * GamePanel.SCALE;
+			} else {
+				x += 10;
+			}
+		}
+		if (Keys.isPressed(Keys.UP)) {
+			y -= 10;
+		}
+		if (Keys.isPressed(Keys.DOWN)) {
+			y += 10;
+		}
 	}
 
 	public void setLeft(boolean b) {
@@ -237,12 +258,7 @@ public abstract class MapObject {
 
 	public void draw(Graphics2D g) {
 		setMapPosition();
-		if (facingRight) {
-			g.drawImage(animation.getImage(), (int) (x + xmap - width / 2), (int) (y + ymap - height / 2), null);
-		} else {
-			g.drawImage(animation.getImage(), (int) (x + xmap - width / 2 + width), (int) (y + ymap - height / 2),
-					-width, height, null);
-		}
+		g.drawImage(animation.getImage(), (int) x, (int) y, 43, 43, null);
 		// draw collision box
 		// Rectangle r = getRectangle();
 		// r.x += xmap;
