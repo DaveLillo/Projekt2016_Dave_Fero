@@ -4,6 +4,7 @@ import spiel.GamePanel;
 
 public class GameStateManager {
 
+	public static final int OPTIONSTATE = 1;
 	private GameState[] gameStates;
 	private int currentState;
 
@@ -38,6 +39,8 @@ public class GameStateManager {
 			gameStates[state] = new MenuState(this);
 		else if (state == LEVEL1STATE)
 			gameStates[state] = new Level1State(this);
+		else if (state == OPTIONSTATE)
+			gameStates[state] = new OptionState(this);
 		/*
 		 * else if(state == LEVEL1BSTATE) gameStates[state] = new
 		 * Level1BState(this); else if(state == LEVEL1CSTATE) gameStates[state]
