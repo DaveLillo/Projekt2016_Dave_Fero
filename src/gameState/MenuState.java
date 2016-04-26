@@ -15,19 +15,12 @@ public class MenuState extends GameState {
 	private BufferedImage head;
 
 	private int currentChoice = 0;
-	private int currentOptionChoice = 0;
-	private boolean optionON = false;
 	private String[] options = { "Start", "Settings", "Quit" };
-	private String[] options2 = { "Sounds", "Keys", "return" };
 
 	private Color titleColor;
 	private Font titleFont;
-
-	private String soundsON = "OFF";
 	private Font font;
 	private Font font2;
-
-	private boolean enterKey;
 
 	private BufferedImage image;
 
@@ -90,17 +83,11 @@ public class MenuState extends GameState {
 		// draw floating head
 		if (currentChoice == 0) {
 			g.drawImage(head, 51, 165, null);
-			enterKey = false;
 		} else if (currentChoice == 1) {
 			g.drawImage(head, 144, 165, null);
-			if (enterKey) {
-				optionON = true;
-			}
-		} else if (currentChoice == 2)
 
-		{
+		} else if (currentChoice == 2) {
 			g.drawImage(head, 233, 165, null);
-			enterKey = false;
 		}
 		// other
 		g.setFont(font2);
@@ -114,7 +101,7 @@ public class MenuState extends GameState {
 
 			gsm.setState(GameStateManager.LEVEL1STATE);
 
-		} else if (currentChoice == 1 && !enterKey) {
+		} else if (currentChoice == 1) {
 			if (Keys.isPressed(Keys.ENTER)) {
 				gsm.setState(GameStateManager.OPTIONSTATE);
 			}
@@ -126,13 +113,13 @@ public class MenuState extends GameState {
 	public void handleInput() {
 		if (Keys.isPressed(Keys.ENTER))
 			select();
-		if (Keys.isPressed(Keys.LEFT) && !optionON) {
+		if (Keys.isPressed(Keys.LEFT)) {
 			if (currentChoice > 0) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice--;
 			}
 		}
-		if (Keys.isPressed(Keys.RIGHT) && !optionON) {
+		if (Keys.isPressed(Keys.RIGHT)) {
 			if (currentChoice < options.length - 1) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice++;
