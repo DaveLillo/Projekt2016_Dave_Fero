@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 
 import handlers.Keys;
 import spiel.GamePanel;
@@ -16,6 +19,9 @@ public class OptionState extends GameState {
 
 	private Color titleColor;
 	private Font titleFont;
+
+	BufferedReader in;
+	boolean soundOptions;
 
 	private Font font;
 
@@ -47,6 +53,22 @@ public class OptionState extends GameState {
 	}
 
 	public void draw(Graphics2D g) {
+
+		try {
+			in = new BufferedReader(
+					new FileReader("C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt"));
+			if (in.readLine().equals("Y")) {
+				soundOptions = false;
+			} else {
+				soundOptions = true;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// draw bg
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
@@ -66,8 +88,11 @@ public class OptionState extends GameState {
 
 		g.setColor(titleColor);
 		g.drawString("Sound: ", 110, 45);
-		BufferedReader in = new BufferedReader(new FileReader("/Resource/music/musicSettings"));
-		g.drawString(soundsON, 170, 45);
+		if (!soundOptions) {
+			g.drawString("OFF", 170, 45);
+		} else {
+			g.drawString("ON", 170, 45);
+		}
 		g.drawString(options2[1], 110, 80);
 		g.drawString(options2[2], 140, 170);
 
@@ -83,6 +108,40 @@ public class OptionState extends GameState {
 
 	private void select() {
 		if (currentOptionChoice == 0) {
+			FileOutputStream fos;
+			if (!soundOptions) {
+				try {
+					fos = new FileOutputStream(
+							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt");
+					fos.write("N".getBytes());
+					fos.flush();
+					fos.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else {
+				try {
+					fos = new FileOutputStream(
+							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt");
+					fos.write("Y".getBytes());
+					fos.flush();
+					fos.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		if (currentOptionChoice == 1) {
+
 		}
 
 		if (currentOptionChoice == 2) {
