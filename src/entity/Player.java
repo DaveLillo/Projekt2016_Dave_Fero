@@ -2,7 +2,10 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import tileMap.TileMap;
 
@@ -22,9 +25,17 @@ public class Player extends MapObject {
 
 	private boolean attacking;
 
+	private ArrayList<BufferedImage[]> sprites;
+	private final int[] NUMFRAMES = { 1 };
+	private final int[] FRAMEWIDTHS = { 100 };
+	private final int[] FRAMEHEIGHTS = { 100 };
+	private final int[] SPRITEDELAYS = { -1 };
+
 	private Rectangle ar;
 	private Rectangle aur;
 	private Rectangle cr;
+
+	private static final int IDLE = 0;
 
 	public Player(TileMap tm) {
 		super(tm);
@@ -46,6 +57,8 @@ public class Player extends MapObject {
 		maxSpeed = 15;
 		stopSpeed = 1.6;
 
+		facingRight = true;
+
 		damage = 1;
 
 		lives = 3;
@@ -53,6 +66,26 @@ public class Player extends MapObject {
 
 		energyParticles = new ArrayList<EnergyParticle>();
 
+		try {
+			BufferedImage spritesheet = ImageIO
+					.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites.gif"));
+
+			int count = 0;
+			sprites = new ArrayList<BufferedImage[]>();
+			for (int i = 0; i < NUMFRAMES.length; i++) {
+				BufferedImage[] bi = new BufferedImage[NUMFRAMES[i]];
+				for (int j = 0; j < NUMFRAMES[i]; j++) {
+					bi[j] = spritesheet.getSubimage(j * FRAMEWIDTHS[i], count, FRAMEWIDTHS[i], FRAMEHEIGHTS[i]);
+				}
+				sprites.add(bi);
+				count += FRAMEHEIGHTS[i];
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		setAnimation(IDLE);
+		// set energy particles
 		// load sfx
 	}
 
@@ -120,6 +153,14 @@ public class Player extends MapObject {
 		return score;
 	}
 
+	private void setAnimation(int i) {
+		currentAction = i;
+		animation.setFrames(sprites.get(currentAction));
+		animation.setDelay(SPRITEDELAYS[currentAction]);
+		width = FRAMEWIDTHS[currentAction];
+		height = FRAMEHEIGHTS[currentAction];
+	}
+
 	public void hit(int damage) {
 		if (flinching)
 			return;
@@ -137,6 +178,7 @@ public class Player extends MapObject {
 
 	public void reset() {
 		health = maxHealth;
+		currentAction = -1;
 		stop();
 	}
 
@@ -180,7 +222,7 @@ public class Player extends MapObject {
 
 		getNextPosition();
 		checkTileMapCollision();
-		setPosition(xtemp, ytemp);
+		// setPosition(xtemp, ytemp);
 
 		if (dx == 0) {
 			x = (int) x;
@@ -200,6 +242,12 @@ public class Player extends MapObject {
 				i--;
 			}
 		}
+
+		setAnimation(IDLE);
+
+		animation.update();
+
+		facingRight = true;
 
 		// check if attacking, set bool attacking
 

@@ -49,7 +49,8 @@ public class Level1State extends GameState {
 		tileMap.setTween(1);
 
 		player = new Player(tileMap);
-		player.setPosition(GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE);
+		// TODO: das variabel machen
+		player.setPosition(140, 100);
 		player.setHealth(1);
 		player.setLives(3);
 		player.setTime(0);
@@ -129,7 +130,7 @@ public class Level1State extends GameState {
 			explosions.get(i).draw(g);
 		}
 
-		// player.draw(g);
+		player.draw(g);
 
 		g.setColor(Color.BLACK);
 		for (int i = 0; i < tb.size(); i++) {
