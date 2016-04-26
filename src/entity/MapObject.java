@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 
 import handlers.Keys;
 import spiel.GamePanel;
@@ -51,8 +52,6 @@ public abstract class MapObject {
 	protected boolean right;
 	protected boolean up;
 	protected boolean down;
-	protected boolean jumping;
-	protected boolean falling;
 
 	protected double moveSpeed;
 	protected double maxSpeed;
@@ -62,13 +61,14 @@ public abstract class MapObject {
 	protected double jumpStart;
 	protected double stopJumpSpeed;
 
-	private int timertemp = 0;
+	private int rotation;
 
 	public MapObject(TileMap tm) {
 		tileMap = tm;
 		tileSize = tm.getTileSize();
 		animation = new Animation();
 		facingRight = true;
+		rotation = 0;
 	}
 
 	public boolean intersects(MapObject o) {
@@ -114,61 +114,28 @@ public abstract class MapObject {
 		bottomRight = br == Tile.BLOCKED;
 	}
 
-	public void checkTileMapCollision() {
-
-		currCol = (int) x / tileSize;
-		currRow = (int) y / tileSize;
-
-		xdest = x + dx;
-		ydest = y + dy;
-
-		xtemp = x;
-		ytemp = y;
-
-		calculateCorners(x, ydest);
-		if (dy < 0) {
-			if (topLeft || topRight) {
-				dy = 0;
-				ytemp = currRow * tileSize + cheight / 2;
-			} else {
-				ytemp += dy;
-			}
-		}
-		if (dy > 0) {
-			if (bottomLeft || bottomRight) {
-				dy = 0;
-				falling = false;
-				ytemp = (currRow + 1) * tileSize - cheight / 2;
-			} else {
-				ytemp += dy;
-			}
-		}
-
-		calculateCorners(xdest, y);
-		if (dx < 0) {
-			if (topLeft || bottomLeft) {
-				dx = 0;
-				xtemp = currCol * tileSize + cwidth / 2;
-			} else {
-				xtemp += dx;
-			}
-		}
-		if (dx > 0) {
-			if (topRight || bottomRight) {
-				dx = 0;
-				xtemp = (currCol + 1) * tileSize - cwidth / 2;
-			} else {
-				xtemp += dx;
-			}
-		}
-
-		if (!falling) {
-			calculateCorners(x, ydest + 1);
-			if (!bottomLeft && !bottomRight) {
-				falling = true;
-			}
-		}
-	}
+	/*
+	 * public void checkTileMapCollision() {
+	 * 
+	 * currCol = (int) x / tileSize; currRow = (int) y / tileSize;
+	 * 
+	 * xdest = x + dx; ydest = y + dy;
+	 * 
+	 * xtemp = x; ytemp = y;
+	 * 
+	 * calculateCorners(x, ydest); if (dy < 0) { if (topLeft || topRight) { dy =
+	 * 0; ytemp = currRow * tileSize + cheight / 2; } else { ytemp += dy; } } if
+	 * (dy > 0) { if (bottomLeft || bottomRight) { dy = 0; falling = false;
+	 * ytemp = (currRow + 1) * tileSize - cheight / 2; } else { ytemp += dy; } }
+	 * 
+	 * calculateCorners(xdest, y); if (dx < 0) { if (topLeft || bottomLeft) { dx
+	 * = 0; xtemp = currCol * tileSize + cwidth / 2; } else { xtemp += dx; } }
+	 * if (dx > 0) { if (topRight || bottomRight) { dx = 0; xtemp = (currCol +
+	 * 1) * tileSize - cwidth / 2; } else { xtemp += dx; } }
+	 * 
+	 * if (!falling) { calculateCorners(x, ydest + 1); if (!bottomLeft &&
+	 * !bottomRight) { falling = true; } } }
+	 */
 
 	public int getx() {
 		return (int) x;
@@ -210,24 +177,16 @@ public abstract class MapObject {
 
 	public void setMapPosition() {
 		if (Keys.isPressed(Keys.LEFT)) {
-			if (x - 10 < 0) {
-				x = 0;
-			} else {
-				x -= 10;
-			}
+			rotation += 5;
 		}
 		if (Keys.isPressed(Keys.RIGHT)) {
-			if (x + 10 > GamePanel.WIDTH * GamePanel.SCALE) {
-				x = GamePanel.WIDTH * GamePanel.SCALE;
-			} else {
-				x += 10;
-			}
+			rotation -= 5;
 		}
 		if (Keys.isPressed(Keys.UP)) {
-			y -= 10;
+			y -= 2;
 		}
 		if (Keys.isPressed(Keys.DOWN)) {
-			y += 10;
+			y += 2;
 		}
 	}
 
@@ -247,22 +206,30 @@ public abstract class MapObject {
 		down = b;
 	}
 
-	public void setJumping(boolean b) {
-		jumping = b;
-	}
-
 	public boolean notOnScreen() {
 		return x + xmap + width < 0 || x + xmap - width > GamePanel.WIDTH || y + ymap + height < 0
 				|| y + ymap - height > GamePanel.HEIGHT;
 	}
 
 	public void draw(Graphics2D g) {
+		// TODO das variabel machen
 		setMapPosition();
-		g.drawImage(animation.getImage(), (int) x, (int) y, 43, 43, null);
+		// g.drawImage(animation.getImage(), (int) x, (int) y, 43, 43, null);
+		double rotationRequired = Math.toRadians(rotation);
+
+		AffineTransform orig = g.getTransform();
+
+		g.translate(x, y);
+		g.rotate(rotationRequired);
+
+		g.drawImage(animation.getImage(), -20, -20, 40, 40, null);
+
 		// draw collision box
-		// Rectangle r = getRectangle();
-		// r.x += xmap;
-		// r.y += ymap;
-		// g.draw(r);
+		Rectangle r = getRectangle();
+		r.x = -20;
+		r.y = -20;
+		g.draw(r);
+
+		g.setTransform(orig);
 	}
 }

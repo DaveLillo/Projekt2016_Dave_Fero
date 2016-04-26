@@ -50,8 +50,8 @@ public class Player extends MapObject {
 
 		width = 30;
 		height = 30;
-		cwidth = 15;
-		cheight = 38;
+		cwidth = 40;
+		cheight = 40;
 
 		moveSpeed = 1.6;
 		maxSpeed = 15;
@@ -172,8 +172,6 @@ public class Player extends MapObject {
 		flinching = true;
 		flinchCount = 0;
 		dy = -3;
-		falling = true;
-		jumping = false;
 	}
 
 	public void reset() {
@@ -221,7 +219,7 @@ public class Player extends MapObject {
 		time++;
 
 		getNextPosition();
-		checkTileMapCollision();
+		// checkTileMapCollision();
 		// setPosition(xtemp, ytemp);
 
 		if (dx == 0) {

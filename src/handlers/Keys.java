@@ -19,6 +19,8 @@ public class Keys {
 	public static int ENTER = 8;
 	public static int ESCAPE = 9;
 
+	private static int i = 0;
+
 	public static void keySet(int i, boolean b) {
 		if (i == KeyEvent.VK_UP)
 			keyState[UP] = b;
@@ -43,12 +45,20 @@ public class Keys {
 	}
 
 	public static void update() {
-		for (int i = 0; i < NUM_KEYS; i++) {
-			prevKeyState[i] = keyState[i];
+		if (i == 10) {
+			for (int i = 0; i < NUM_KEYS; i++) {
+				prevKeyState[i] = keyState[i];
+			}
+		} else {
+			i++;
 		}
 	}
 
 	public static boolean isPressed(int i) {
+		return keyState[i] && prevKeyState[i];
+	}
+
+	public static boolean isPressedShort(int i) {
 		return keyState[i] && !prevKeyState[i];
 	}
 
