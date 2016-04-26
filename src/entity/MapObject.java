@@ -223,6 +223,7 @@ public abstract class MapObject {
 		g.rotate(rotationRequired);
 
 		g.drawImage(animation.getImage(), -20, -20, 40, 40, null);
+		// seas
 
 		// draw collision box
 		Rectangle r = getRectangle();
