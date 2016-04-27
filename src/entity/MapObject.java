@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 import handlers.Keys;
-import spiel.GamePanel;
 import tileMap.Tile;
 import tileMap.TileMap;
 
@@ -61,7 +60,12 @@ public abstract class MapObject {
 	protected double jumpStart;
 	protected double stopJumpSpeed;
 
+	// velosity
 	private int rotation;
+	private int count;
+	private boolean[] last300moves;
+	private int last;
+	private double velocityConst = (Math.pow(1.018, count));
 
 	public MapObject(TileMap tm) {
 		tileMap = tm;
@@ -69,6 +73,8 @@ public abstract class MapObject {
 		animation = new Animation();
 		facingRight = true;
 		rotation = 0;
+		last300moves = new boolean[300];
+		last = 0;
 	}
 
 	public boolean intersects(MapObject o) {
@@ -177,16 +183,114 @@ public abstract class MapObject {
 
 	public void setMapPosition() {
 		if (Keys.isPressed(Keys.LEFT)) {
-			rotation += 5;
-		}
-		if (Keys.isPressed(Keys.RIGHT)) {
 			rotation -= 5;
 		}
+		if (Keys.isPressed(Keys.RIGHT)) {
+			rotation += 5;
+		}
 		if (Keys.isPressed(Keys.UP)) {
-			y -= 2;
+			addToArray(true);
+			calculateVelosity(true);
+			correctPosition();
 		}
 		if (Keys.isPressed(Keys.DOWN)) {
-			y += 2;
+			addToArray(false);
+			calculateVelosity(false);
+			correctPosition();
+		}
+		if (!Keys.anyKeyPress()) {
+			last = 0;
+			last300moves[last] = false;
+		}
+	}
+
+	private void correctPosition() {
+		if (x < 0)
+			x = 1;
+		if (x > 320)
+			x = 319;
+		if (y < 0)
+			y = 1;
+		if (y > 240)
+			y = 239;
+		if (rotation < 0)
+			rotation = 360 + rotation;
+		if (rotation > 360)
+			rotation -= 360;
+	}
+
+	private void calculateVelosity(boolean b) { // b = true --> up
+		if (count != 60) {
+			count++;
+		}
+		if (b) {
+			checkMoves(b);
+			if (rotation == 0) {
+				y -= count / 10 * velocityConst;
+			} else {
+				calculateDirection(b);
+			}
+		} else {
+			checkMoves(b);
+			if (rotation == 0) {
+				y += count / 10 * velocityConst;
+			} else {
+				calculateDirection(b);
+			}
+		}
+	}
+
+	private void calculateDirection(boolean up) {
+		double a;
+		double b;
+		if (up) { // vorwärts
+			if (rotation > 90 && rotation < 180) { // rechts unten
+				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
+				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
+				x += a / 2;
+				y += b / 2;
+			} else if (rotation > 180 && rotation < 270) { // links unten
+				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (rotation - 180)));
+				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
+				x -= a / 2;
+				y += b / 2;
+			} else if (rotation > 270 && rotation < 360) { // links oben
+				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (360 - rotation)));
+				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
+				x -= a / 2;
+				y -= b / 2;
+			} else { // rechts oben
+				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - rotation));
+				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
+				x += a / 2;
+				y -= b / 2;
+			}
+		} else { // rückwärts
+
+		}
+	}
+
+	private boolean checkMoves(boolean b) { // b = true --> up
+		for (int i = 0; i < count; i++) {
+			if (last300moves[i] != b) {
+				count = 1;
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void addToArray(boolean b) { // b = true --> up
+		if (checkMoves(b)) {
+			last300moves[last] = b;
+		} else {
+			last = 0;
+			last300moves[last] = b;
+		}
+		if (last == 299) {
+			// last bleibt 300
+		} else {
+			last++;
 		}
 	}
 
@@ -206,15 +310,9 @@ public abstract class MapObject {
 		down = b;
 	}
 
-	public boolean notOnScreen() {
-		return x + xmap + width < 0 || x + xmap - width > GamePanel.WIDTH || y + ymap + height < 0
-				|| y + ymap - height > GamePanel.HEIGHT;
-	}
-
 	public void draw(Graphics2D g) {
 		// TODO das variabel machen
 		setMapPosition();
-		// g.drawImage(animation.getImage(), (int) x, (int) y, 43, 43, null);
 		double rotationRequired = Math.toRadians(rotation);
 
 		AffineTransform orig = g.getTransform();
@@ -222,14 +320,12 @@ public abstract class MapObject {
 		g.translate(x, y);
 		g.rotate(rotationRequired);
 
-		g.drawImage(animation.getImage(), -20, -20, 40, 40, null);
-		// seas
+		g.drawImage(animation.getImage(), -10, -10, 20, 20, null);
 
 		// draw collision box
-		Rectangle r = getRectangle();
-		r.x = -20;
-		r.y = -20;
-		g.draw(r);
+		/*
+		 * Rectangle r = getRectangle(); r.x = -20; r.y = -20; g.draw(r);
+		 */
 
 		g.setTransform(orig);
 	}

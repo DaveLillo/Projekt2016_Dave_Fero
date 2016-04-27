@@ -139,7 +139,7 @@ public class Level1State extends GameState {
 	}
 
 	public void handleInput() {
-		if (Keys.isPressed(Keys.ESCAPE))
+		if (Keys.isPressedShort(Keys.ESCAPE))
 			gsm.setPaused(true);
 		if (blockInput || player.getHealth() == 0)
 			return;

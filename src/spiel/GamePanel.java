@@ -62,7 +62,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent key) {
-
 	}
 
 	@Override
@@ -71,8 +70,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		Keys.keySet(e.getKeyCode(), false);
+	public void keyReleased(KeyEvent key) {
+		Keys.keySet(key.getKeyCode(), false);
 	}
 
 	@Override

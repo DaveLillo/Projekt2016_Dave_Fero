@@ -102,24 +102,21 @@ public class MenuState extends GameState {
 			gsm.setState(GameStateManager.LEVEL1STATE);
 
 		} else if (currentChoice == 1) {
-			if (Keys.isPressed(Keys.ENTER)) {
-				gsm.setState(GameStateManager.OPTIONSTATE);
-			}
-
+			gsm.setState(GameStateManager.OPTIONSTATE);
 		} else if (currentChoice == 2)
 			System.exit(0);
 	}
 
 	public void handleInput() {
-		if (Keys.isPressed(Keys.ENTER))
+		if (Keys.isPressedShort(Keys.ENTER))
 			select();
-		if (Keys.isPressed(Keys.LEFT)) {
+		if (Keys.isPressedShort(Keys.LEFT)) {
 			if (currentChoice > 0) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice--;
 			}
 		}
-		if (Keys.isPressed(Keys.RIGHT)) {
+		if (Keys.isPressedShort(Keys.RIGHT)) {
 			if (currentChoice < options.length - 1) {
 				// JukeBox.play("menuoption", 0);
 				currentChoice++;
