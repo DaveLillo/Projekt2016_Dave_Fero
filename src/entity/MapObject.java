@@ -66,6 +66,9 @@ public abstract class MapObject {
 	private boolean[] last300moves;
 	private int last;
 	private double velocityConst = (Math.pow(1.018, count));
+	private double factor = 2.0;
+
+	protected boolean isPlayer;
 
 	public MapObject(TileMap tm) {
 		tileMap = tm;
@@ -198,9 +201,15 @@ public abstract class MapObject {
 			calculateVelosity(false);
 			correctPosition();
 		}
-		if (!Keys.anyKeyPress()) {
+		if (!Keys.isPressed(Keys.UP) && !Keys.isPressed(Keys.DOWN)) {
 			last = 0;
 			last300moves[last] = false;
+			if (factor == 70) {
+				calculateDirection(false, false);
+			} else {
+				factor += 2;
+				calculateDirection(true, true);
+			}
 		}
 	}
 
@@ -228,45 +237,65 @@ public abstract class MapObject {
 			if (rotation == 0) {
 				y -= count / 10 * velocityConst;
 			} else {
-				calculateDirection(b);
+				calculateDirection(b, false);
 			}
 		} else {
 			checkMoves(b);
 			if (rotation == 0) {
 				y += count / 10 * velocityConst;
 			} else {
-				calculateDirection(b);
+				calculateDirection(b, false);
 			}
 		}
 	}
 
-	private void calculateDirection(boolean up) {
+	private void calculateDirection(boolean up, boolean slowDown) {
 		double a;
 		double b;
 		if (up) { // vorwärts
-			if (rotation > 90 && rotation < 180) { // rechts unten
+			if (rotation > 90 && rotation <= 180) { // rechts unten
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				x += a / 2;
-				y += b / 2;
+				if (!slowDown) {
+					x += a / 2;
+					y += b / 2;
+				} else {
+					x += a / factor;
+					y += b / factor;
+				}
 			} else if (rotation > 180 && rotation < 270) { // links unten
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (rotation - 180)));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				x -= a / 2;
-				y += b / 2;
+				if (!slowDown) {
+					x -= a / 2;
+					y += b / 2;
+				} else {
+					x -= a / factor;
+					y += b / factor;
+				}
 			} else if (rotation > 270 && rotation < 360) { // links oben
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (360 - rotation)));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				x -= a / 2;
-				y -= b / 2;
+				if (!slowDown) {
+					x -= a / 2;
+					y -= b / 2;
+				} else {
+					x -= a / factor;
+					y -= b / factor;
+				}
 			} else { // rechts oben
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - rotation));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				x += a / 2;
-				y -= b / 2;
+				if (!slowDown) {
+					x += a / 2;
+					y -= b / 2;
+				} else {
+					x += a / factor;
+					y -= b / factor;
+				}
 			}
 		} else { // rückwärts
-
+			// nächstes berechnen und kleiner machen
 		}
 	}
 
@@ -312,21 +341,27 @@ public abstract class MapObject {
 
 	public void draw(Graphics2D g) {
 		// TODO das variabel machen
-		setMapPosition();
-		double rotationRequired = Math.toRadians(rotation);
+		if (isPlayer) {
+			setMapPosition();
+			double rotationRequired = Math.toRadians(rotation);
 
-		AffineTransform orig = g.getTransform();
+			AffineTransform orig = g.getTransform();
 
-		g.translate(x, y);
-		g.rotate(rotationRequired);
+			g.translate(x, y);
+			g.rotate(rotationRequired);
 
-		g.drawImage(animation.getImage(), -10, -10, 20, 20, null);
+			g.drawImage(animation.getImage(), -10, -10, 20, 20, null);
 
-		// draw collision box
-		/*
-		 * Rectangle r = getRectangle(); r.x = -20; r.y = -20; g.draw(r);
-		 */
+			// draw collision box
+			/*
+			 * Rectangle r = getRectangle(); r.x = -20; r.y = -20; g.draw(r);
+			 */
 
-		g.setTransform(orig);
+			g.setTransform(orig);
+		} else {
+			// setPosition(30, 30); // setzt x und y also die größe
+
+			g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30, null);
+		}
 	}
 }

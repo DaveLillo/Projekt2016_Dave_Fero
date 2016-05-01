@@ -9,6 +9,7 @@ import entity.Enemy;
 import entity.EnergyParticle;
 import entity.Explosion;
 import entity.Player;
+import entity.Stone;
 import handlers.Background;
 import handlers.Keys;
 import spiel.GamePanel;
@@ -73,6 +74,11 @@ public class Level1State extends GameState {
 
 	private void populateEnemies() {
 		// Objekte erzeugen und Position setzen.
+		Stone s;
+
+		s = new Stone(tileMap);
+		s.setPosition(100, 100);
+		enemies.add(s);
 	}
 
 	public void update() {

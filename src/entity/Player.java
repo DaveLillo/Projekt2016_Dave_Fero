@@ -40,6 +40,8 @@ public class Player extends MapObject {
 	public Player(TileMap tm) {
 		super(tm);
 
+		isPlayer = true;
+
 		ar = new Rectangle(0, 0, 0, 0);
 		ar.width = 30;
 		ar.height = 20;
