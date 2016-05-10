@@ -40,6 +40,6 @@ public class Main {
 	public static void main(String[] args) {
 		Minim m = new Minim(new MinimHelper());
 
-		m.loadFile("Resources/music/level1.mp3").play();
+		m.loadFile("Resources/music/level1boss.mp3").play();
 	}
 }

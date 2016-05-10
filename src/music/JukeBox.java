@@ -13,14 +13,15 @@ public class JukeBox {
 	private static int gap;
 	private static boolean mute = false;
 
-	public void init() {
+	public static void init() {
 		clips = new HashMap<String, Clip>();
 		gap = 0;
 	}
 
 	public static void load(String s, String n) {
-		if (clips.get(n) != null)
+		if (clips.get(n) != null) {
 			return;
+		}
 		Clip clip;
 		try {
 			AudioInputStream ais = AudioSystem.getAudioInputStream(JukeBox.class.getResourceAsStream(s));

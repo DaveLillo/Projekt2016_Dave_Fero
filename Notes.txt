@@ -1,1 +1,2 @@
 Neue Tasten: auch in Level1State handleInput() hinzufügen!
+Alles mögliche was Player betrifft aus der MapObect Klasse raus!

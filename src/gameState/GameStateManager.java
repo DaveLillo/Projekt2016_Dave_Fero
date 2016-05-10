@@ -1,5 +1,6 @@
 package gameState;
 
+import music.JukeBox;
 import spiel.GamePanel;
 
 public class GameStateManager {
@@ -22,7 +23,7 @@ public class GameStateManager {
 
 	public GameStateManager() {
 
-		// JukeBox.init();
+		JukeBox.init();
 
 		gameStates = new GameState[NUMGAMESTATES];
 
