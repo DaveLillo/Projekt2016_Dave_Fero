@@ -3,6 +3,9 @@ package gameState;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import entity.Enemy;
@@ -33,6 +36,7 @@ public class Level1State extends GameState {
 	private ArrayList<Rectangle> tb;
 	private boolean eventFinish;
 	private boolean eventDead;
+	private BufferedReader keyOpt;
 
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
@@ -71,7 +75,7 @@ public class Level1State extends GameState {
 		eventStart();
 
 		// sfx + music
-		JukeBox.play("/Resources/Music/level1.mp3");
+		JukeBox.play("/Resources/music/level1.mp3");
 	}
 
 	private void populateEnemies() {
@@ -147,14 +151,31 @@ public class Level1State extends GameState {
 	}
 
 	public void handleInput() {
+		String s = "";
 		if (Keys.isPressedShort(Keys.ESCAPE))
 			gsm.setPaused(true);
 		if (blockInput || player.getHealth() == 0)
 			return;
-		player.setUp(Keys.keyState[Keys.UP]);
-		player.setLeft(Keys.keyState[Keys.LEFT]);
-		player.setDown(Keys.keyState[Keys.DOWN]);
-		player.setRight(Keys.keyState[Keys.RIGHT]);
+		try {
+			keyOpt = new BufferedReader(new FileReader("Resources/Options/keySettings.txt"));
+			s = keyOpt.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (s.equals("0")) {
+			player.setUp(Keys.keyState[Keys.UP]);
+			player.setLeft(Keys.keyState[Keys.LEFT]);
+			player.setDown(Keys.keyState[Keys.DOWN]);
+			player.setRight(Keys.keyState[Keys.RIGHT]);
+		} else if (s.equals("1")) {
+			player.setUp(Keys.keyState[Keys.W]);
+			player.setLeft(Keys.keyState[Keys.A]);
+			player.setDown(Keys.keyState[Keys.S]);
+			player.setRight(Keys.keyState[Keys.D]);
+		}
+
 	}
 
 	private void reset() {

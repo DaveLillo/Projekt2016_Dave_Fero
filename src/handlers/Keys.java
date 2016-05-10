@@ -12,13 +12,12 @@ public class Keys {
 	public static int LEFT = 1;
 	public static int DOWN = 2;
 	public static int RIGHT = 3;
-	public static int BUTTON1 = 4;
-	public static int BUTTON2 = 5;
-	public static int BUTTON3 = 6;
-	public static int BUTTON4 = 7;
+	public static int W = 4;
+	public static int A = 5;
+	public static int S = 6;
+	public static int D = 7;
 	public static int ENTER = 8;
 	public static int ESCAPE = 9;
-
 	private static int i = 0;
 
 	public static void keySet(int i, boolean b) {
@@ -31,13 +30,13 @@ public class Keys {
 		else if (i == KeyEvent.VK_RIGHT)
 			keyState[RIGHT] = b;
 		else if (i == KeyEvent.VK_W)
-			keyState[BUTTON1] = b;
-		else if (i == KeyEvent.VK_E)
-			keyState[BUTTON2] = b;
-		else if (i == KeyEvent.VK_R)
-			keyState[BUTTON3] = b;
-		else if (i == KeyEvent.VK_F)
-			keyState[BUTTON4] = b;
+			keyState[W] = b;
+		else if (i == KeyEvent.VK_A)
+			keyState[A] = b;
+		else if (i == KeyEvent.VK_S)
+			keyState[S] = b;
+		else if (i == KeyEvent.VK_D)
+			keyState[D] = b;
 		else if (i == KeyEvent.VK_ENTER)
 			keyState[ENTER] = b;
 		else if (i == KeyEvent.VK_ESCAPE)
