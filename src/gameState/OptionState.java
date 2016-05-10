@@ -56,10 +56,8 @@ public class OptionState extends GameState {
 
 	public void reader() {
 		try {
-			in = new BufferedReader(
-					new FileReader("C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt"));
-			keysIn = new BufferedReader(
-					new FileReader("C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/keySettings.txt"));
+			in = new BufferedReader(new FileReader("Resources/Options/musicSettings.txt"));
+			keysIn = new BufferedReader(new FileReader("Resources/Options/keySettings.txt"));
 			if (in.readLine().equals("N")) {
 				soundOptions = false;
 			} else {
