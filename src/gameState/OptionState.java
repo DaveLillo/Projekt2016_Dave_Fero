@@ -15,7 +15,7 @@ import spiel.GamePanel;
 public class OptionState extends GameState {
 
 	private int currentOptionChoice = 0;
-	private String[] options2 = { "Sounds", "Keys", "return" };
+	private String[] options2 = { "Sounds", "Keys", "Shoot", "return" };
 
 	private Color titleColor;
 	private Font titleFont;
@@ -106,11 +106,12 @@ public class OptionState extends GameState {
 			g.drawString("ON", 170, 45);
 		}
 		g.drawString(options2[1] + ": ", 110, 80);
+		g.drawString(options2[2] + ": Spacebar", 110, 105);
 		if (!keysOptions)
 			g.drawString("Arrow Keys", 150, 80);
 		else
 			g.drawString("WASD", 150, 80);
-		g.drawString(options2[2], 140, 170);
+		g.drawString(options2[3], 140, 170);
 
 		if (currentOptionChoice == 0) {
 			g.drawRect(110, 50, 100, 0);
