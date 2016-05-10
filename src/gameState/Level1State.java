@@ -75,7 +75,7 @@ public class Level1State extends GameState {
 		eventStart();
 
 		// sfx + music
-		JukeBox.play("/Resources/Music/level1.mp3");
+		JukeBox.play("/Resources/music/level1.mp3");
 	}
 
 	private void populateEnemies() {
@@ -151,27 +151,29 @@ public class Level1State extends GameState {
 	}
 
 	public void handleInput() {
+		String s = "";
 		if (Keys.isPressedShort(Keys.ESCAPE))
 			gsm.setPaused(true);
 		if (blockInput || player.getHealth() == 0)
 			return;
 		try {
 			keyOpt = new BufferedReader(new FileReader("Resources/Options/keySettings.txt"));
-			String s = keyOpt.readLine();
-			if (s.equals("0")) {
-				player.setUp(Keys.keyState[Keys.UP]);
-				player.setLeft(Keys.keyState[Keys.LEFT]);
-				player.setDown(Keys.keyState[Keys.DOWN]);
-				player.setRight(Keys.keyState[Keys.RIGHT]);
-			} else if (s.equals("1")) {
-				player.setUp(Keys.keyState[Keys.W]);
-				player.setLeft(Keys.keyState[Keys.A]);
-				player.setDown(Keys.keyState[Keys.S]);
-				player.setRight(Keys.keyState[Keys.D]);
-			}
+			s = keyOpt.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+
+		if (s.equals("0")) {
+			player.setUp(Keys.keyState[Keys.UP]);
+			player.setLeft(Keys.keyState[Keys.LEFT]);
+			player.setDown(Keys.keyState[Keys.DOWN]);
+			player.setRight(Keys.keyState[Keys.RIGHT]);
+		} else if (s.equals("1")) {
+			player.setUp(Keys.keyState[Keys.W]);
+			player.setLeft(Keys.keyState[Keys.A]);
+			player.setDown(Keys.keyState[Keys.S]);
+			player.setRight(Keys.keyState[Keys.D]);
 		}
 
 	}
