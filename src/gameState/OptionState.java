@@ -128,8 +128,7 @@ public class OptionState extends GameState {
 			FileOutputStream fos;
 			if (!soundOptions) {
 				try {
-					fos = new FileOutputStream(
-							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt");
+					fos = new FileOutputStream("Resources/Options/musicSettings.txt");
 					fos.write("Y".getBytes());
 					fos.flush();
 					fos.close();
@@ -143,8 +142,7 @@ public class OptionState extends GameState {
 
 			} else {
 				try {
-					fos = new FileOutputStream(
-							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/musicSettings.txt");
+					fos = new FileOutputStream("Resources/Options/musicSettings.txt");
 					fos.write("N".getBytes());
 					fos.flush();
 					fos.close();
@@ -161,8 +159,7 @@ public class OptionState extends GameState {
 			FileOutputStream fos1;
 			if (!keysOptions) {
 				try {
-					fos1 = new FileOutputStream(
-							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/keySettings.txt");
+					fos1 = new FileOutputStream("Resources/Options/keySettings.txt");
 					fos1.write("1".getBytes());
 					fos1.flush();
 					fos1.close();
@@ -176,8 +173,7 @@ public class OptionState extends GameState {
 
 			} else {
 				try {
-					fos1 = new FileOutputStream(
-							"C:/Users/User/git/Projekt2016_Dave_Fero/Resources/Options/keySettings.txt");
+					fos1 = new FileOutputStream("Resources/Options/keySettings.txt");
 					fos1.write("0".getBytes());
 					fos1.flush();
 					fos1.close();
@@ -197,20 +193,20 @@ public class OptionState extends GameState {
 	}
 
 	public void handleInput() {
-		if (Keys.isPressed(Keys.ENTER))
+		if (Keys.isPressedShort(Keys.ENTER))
 			select();
 
-		if (Keys.isPressed(Keys.DOWN)) {
+		if (Keys.isPressedShort(Keys.DOWN)) {
 			if (currentOptionChoice < options2.length - 1) {
 				currentOptionChoice++;
 			}
 		}
-		if (Keys.isPressed(Keys.UP)) {
+		if (Keys.isPressedShort(Keys.UP)) {
 			if (currentOptionChoice > 0) {
 				currentOptionChoice--;
 			}
 		}
-		if (Keys.isPressed(Keys.ESCAPE)) {
+		if (Keys.isPressedShort(Keys.ESCAPE)) {
 			currentOptionChoice = 2;
 			select();
 		}
