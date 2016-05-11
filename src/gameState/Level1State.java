@@ -15,7 +15,6 @@ import entity.Player;
 import entity.Stone;
 import handlers.Background;
 import handlers.Keys;
-import music.JukeBox;
 import spiel.GamePanel;
 import tileMap.TileMap;
 
@@ -75,9 +74,6 @@ public class Level1State extends GameState {
 		eventStart();
 
 		// sfx + music
-		JukeBox.play("/Resources/music/level1.mp3");
-		JukeBox.load("level1.mp3", "level1");
-		JukeBox.loop("level1", 600, JukeBox.getFrames("level1") - 2200);
 	}
 
 	private void populateEnemies() {
