@@ -30,6 +30,7 @@ public class Level1State extends GameState {
 	private ArrayList<EnergyParticle> energyParticles;
 	private ArrayList<Explosion> explosions;
 	private ArrayList<Missile> missiles;
+	private Missile missile;
 
 	private boolean blockInput = false;
 	private int eventCount = 0;
@@ -67,6 +68,7 @@ public class Level1State extends GameState {
 		populateEnemies();
 
 		missiles = new ArrayList<Missile>();
+		addMissile(missile);
 
 		energyParticles = new ArrayList<EnergyParticle>();
 
@@ -87,6 +89,10 @@ public class Level1State extends GameState {
 		s = new Stone(tileMap);
 		s.setPosition(100, 100);
 		enemies.add(s);
+	}
+
+	private void addMissile(Missile m) {
+		missiles.add(m);
 	}
 
 	public void update() {
