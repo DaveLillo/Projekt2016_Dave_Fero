@@ -34,7 +34,8 @@ public class Missile extends MapObject {
 
 	public void draw(Graphics2D g) {
 		update();
-		System.out.println("x: " + x + ", y: " + y + ", rotation: " + rotation);
+		// System.out.println("x: " + x + ", y: " + y + ", rotation: " +
+		// rotation);
 		double rotationRequired = Math.toRadians(rotation);
 		AffineTransform orig = g.getTransform();
 		g.translate(x, y);
@@ -44,7 +45,29 @@ public class Missile extends MapObject {
 	}
 
 	private void update() {
-		x++;
-		y++;
+		if (rotation >= 360)
+			rotation -= 360;
+		if (rotation == 0)
+			y++;
+		else if (rotation < 90) {
+			x++;
+			y--;
+		} else if (rotation == 90)
+			x++;
+		else if (rotation > 90 && rotation <= 180) {
+			x++;
+			y++;
+		} else if (rotation == 180)
+			y--;
+		else if (rotation > 180 && rotation < 270) {
+			x--;
+			y++;
+		} else if (rotation == 270)
+			x--;
+		else if (rotation > 270 && rotation < 360) {
+			x--;
+			y--;
+		}
+		System.out.println("Rotation: " + rotation);
 	}
 }

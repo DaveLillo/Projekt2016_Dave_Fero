@@ -252,7 +252,7 @@ public abstract class MapObject {
 	private void calculateDirection(boolean up, boolean slowDown) {
 		double a;
 		double b;
-		if (up) { // vorwärts
+		if (up) { // vorwï¿½rts
 			if (rotation > 90 && rotation <= 180) { // rechts unten
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
@@ -294,8 +294,8 @@ public abstract class MapObject {
 					y -= b / factor;
 				}
 			}
-		} else { // rückwärts
-			// nächstes berechnen und kleiner machen
+		} else { // rï¿½ckwï¿½rts
+			// nï¿½chstes berechnen und kleiner machen
 		}
 	}
 
@@ -341,7 +341,7 @@ public abstract class MapObject {
 
 	public void draw(Graphics2D g) {
 		// TODO das variabel machen
-		System.out.println("x: " + x + ", y: " + y);
+		// System.out.println("x: " + x + ", y: " + y);
 		if (isPlayer) {
 			setMapPosition();
 			double rotationRequired = Math.toRadians(rotation);
@@ -360,7 +360,7 @@ public abstract class MapObject {
 
 			g.setTransform(orig);
 		} else {
-			// setPosition(30, 30); // setzt x und y also die größe
+			// setPosition(30, 30); // setzt x und y also die grï¿½ï¿½e
 
 			// g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30,
 			// null);
