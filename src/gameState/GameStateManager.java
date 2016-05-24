@@ -20,6 +20,7 @@ public class GameStateManager {
 	 * final int ACIDSTATE = 15;
 	 */
 	public static final int LEVEL1STATE = 2;
+	public static final int GAMEOVERSTATE = 3;
 
 	public GameStateManager() {
 
@@ -42,12 +43,8 @@ public class GameStateManager {
 			gameStates[state] = new Level1State(this);
 		else if (state == OPTIONSTATE)
 			gameStates[state] = new OptionState(this);
-		/*
-		 * else if(state == LEVEL1BSTATE) gameStates[state] = new
-		 * Level1BState(this); else if(state == LEVEL1CSTATE) gameStates[state]
-		 * = new Level1CState(this); else if(state == ACIDSTATE)
-		 * gameStates[state] = new AcidState(this);
-		 */
+		else if (state == GAMEOVERSTATE)
+			gameStates[state] = new GameOverState(this);
 	}
 
 	private void unloadState(int state) {

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import handlers.Keys;
+import music.JukeBox;
 import spiel.GamePanel;
 
 public class MenuState extends GameState {
@@ -40,11 +41,8 @@ public class MenuState extends GameState {
 			font = new Font("Arial", Font.PLAIN, 14);
 			font2 = new Font("Arial", Font.PLAIN, 10);
 
-			// load sound fx
-			/*
-			 * JukeBox.load("/SFX/menuoption.mp3", "menuoption");
-			 * JukeBox.load("/SFX/menuselect.mp3", "menuselect");
-			 */
+			JukeBox.stop();
+			JukeBox.play("Resources/music/level1v2.mp3");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,7 +97,7 @@ public class MenuState extends GameState {
 
 		if (currentChoice == 0) {
 
-			gsm.setState(GameStateManager.LEVEL1STATE);
+			gsm.setState(GameStateManager.GAMEOVERSTATE);
 
 		} else if (currentChoice == 1) {
 			gsm.setState(GameStateManager.OPTIONSTATE);
