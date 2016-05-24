@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import entity.Enemy;
 import entity.EnergyParticle;
 import entity.Explosion;
+import entity.Missile;
 import entity.Player;
 import entity.Stone;
 import handlers.Background;
@@ -28,6 +29,7 @@ public class Level1State extends GameState {
 	// private ArrayList<EnemyProjectile> eprojectiles;
 	private ArrayList<EnergyParticle> energyParticles;
 	private ArrayList<Explosion> explosions;
+	private ArrayList<Missile> missiles;
 
 	private boolean blockInput = false;
 	private int eventCount = 0;
@@ -63,6 +65,8 @@ public class Level1State extends GameState {
 		enemies = new ArrayList<Enemy>();
 		// eprojectiles = new ArrayList<EnemyProjectile>();
 		populateEnemies();
+
+		missiles = new ArrayList<Missile>();
 
 		energyParticles = new ArrayList<EnergyParticle>();
 
@@ -129,6 +133,10 @@ public class Level1State extends GameState {
 
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).draw(g);
+		}
+
+		for (int i = 0; i < missiles.size(); i++) {
+			missiles.get(i).draw(g);
 		}
 
 		/*
