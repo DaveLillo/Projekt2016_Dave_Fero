@@ -61,7 +61,7 @@ public abstract class MapObject {
 	protected double stopJumpSpeed;
 
 	// velosity
-	private int rotation;
+	protected int rotation;
 	private int count;
 	private boolean[] last300moves;
 	private int last;
@@ -341,6 +341,7 @@ public abstract class MapObject {
 
 	public void draw(Graphics2D g) {
 		// TODO das variabel machen
+		System.out.println("x: " + x + ", y: " + y);
 		if (isPlayer) {
 			setMapPosition();
 			double rotationRequired = Math.toRadians(rotation);
@@ -361,7 +362,8 @@ public abstract class MapObject {
 		} else {
 			// setPosition(30, 30); // setzt x und y also die größe
 
-			g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30, null);
+			// g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30,
+			// null);
 		}
 	}
 }

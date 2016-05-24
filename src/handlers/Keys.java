@@ -18,6 +18,7 @@ public class Keys {
 	public static int D = 7;
 	public static int ENTER = 8;
 	public static int ESCAPE = 9;
+	public static int SPACE = 10;
 	private static int i = 0;
 
 	public static void keySet(int i, boolean b) {
@@ -41,6 +42,8 @@ public class Keys {
 			keyState[ENTER] = b;
 		else if (i == KeyEvent.VK_ESCAPE)
 			keyState[ESCAPE] = b;
+		else if (i == KeyEvent.VK_SPACE)
+			keyState[SPACE] = b;
 	}
 
 	public static void update() {

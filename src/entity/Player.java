@@ -255,6 +255,10 @@ public class Player extends MapObject {
 
 	}
 
+	public int getRotation() {
+		return rotation;
+	}
+
 	public void draw(Graphics2D g) {
 		for (int i = 0; i < energyParticles.size(); i++) {
 			energyParticles.get(i).draw(g);
