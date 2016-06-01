@@ -12,8 +12,9 @@ import tileMap.TileMap;
 public class Missile extends MapObject {
 
 	public BufferedImage missile;
+	Player player;
 
-	public Missile(TileMap tm, int rotation) {
+	public Missile(TileMap tm, int rotation, Player player) {
 		super(tm);
 		// TODO Auto-generated constructor stub
 		try {
@@ -23,12 +24,14 @@ public class Missile extends MapObject {
 			e.printStackTrace();
 		}
 		this.rotation = rotation;
+		this.player = player;
 		init();
 	}
 
 	private void init() {
-		x = 100;
-		y = 100;
+		x = player.getx();
+		y = player.gety();
+		moveSpeed = 5;
 
 	}
 
@@ -48,26 +51,25 @@ public class Missile extends MapObject {
 		if (rotation >= 360)
 			rotation -= 360;
 		if (rotation == 0)
-			y++;
+			y += moveSpeed;
 		else if (rotation < 90) {
-			x++;
-			y--;
+			x += moveSpeed;
+			y -= moveSpeed;
 		} else if (rotation == 90)
-			x++;
+			x += moveSpeed;
 		else if (rotation > 90 && rotation <= 180) {
-			x++;
-			y++;
+			x += moveSpeed;
+			y += moveSpeed;
 		} else if (rotation == 180)
-			y--;
+			y -= moveSpeed;
 		else if (rotation > 180 && rotation < 270) {
-			x--;
-			y++;
+			x -= moveSpeed;
+			y += moveSpeed;
 		} else if (rotation == 270)
-			x--;
+			x -= moveSpeed;
 		else if (rotation > 270 && rotation < 360) {
-			x--;
-			y--;
+			x -= moveSpeed;
+			y -= moveSpeed;
 		}
-		System.out.println("Rotation: " + rotation);
 	}
 }

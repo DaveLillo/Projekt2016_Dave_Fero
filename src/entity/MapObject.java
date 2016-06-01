@@ -252,8 +252,18 @@ public abstract class MapObject {
 	private void calculateDirection(boolean up, boolean slowDown) {
 		double a;
 		double b;
-		if (up) { // vorwï¿½rts
-			if (rotation > 90 && rotation <= 180) { // rechts unten
+		if (up) { // vorwärts
+			if (rotation == 180) {
+				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
+				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
+				if (!slowDown) {
+					x += a / 4;
+					y += b / 4;
+				} else {
+					x += a / factor;
+					y += b / factor;
+				}
+			} else if (rotation > 90 && rotation < 180) { // rechts unten
 				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
 				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
 				if (!slowDown) {
@@ -294,7 +304,7 @@ public abstract class MapObject {
 					y -= b / factor;
 				}
 			}
-		} else { // rï¿½ckwï¿½rts
+		} else { // rückwärts
 			// nï¿½chstes berechnen und kleiner machen
 		}
 	}
@@ -348,7 +358,7 @@ public abstract class MapObject {
 
 			AffineTransform orig = g.getTransform();
 
-			g.translate(x, y);
+			g.translate(Math.round(x), Math.round(y));
 			g.rotate(rotationRequired);
 
 			g.drawImage(animation.getImage(), -10, -10, 20, 20, null);
@@ -360,10 +370,8 @@ public abstract class MapObject {
 
 			g.setTransform(orig);
 		} else {
-			// setPosition(30, 30); // setzt x und y also die grï¿½ï¿½e
-
-			// g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30,
-			// null);
+			g.drawImage(animation.getImage(), (int) x, (int) y, 30, 30, null);
+			System.out.println(x + " " + y);
 		}
 	}
 }

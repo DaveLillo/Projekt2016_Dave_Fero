@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import entity.Enemy;
 import entity.EnergyParticle;
@@ -16,6 +17,7 @@ import entity.Player;
 import entity.Stone;
 import handlers.Background;
 import handlers.Keys;
+import music.JukeBox;
 import spiel.GamePanel;
 import tileMap.TileMap;
 
@@ -56,7 +58,6 @@ public class Level1State extends GameState {
 		tileMap.setTween(1);
 
 		player = new Player(tileMap);
-		// TODO: das variabel machen
 		player.setPosition(140, 100);
 		player.setHealth(1);
 		player.setLives(3);
@@ -77,15 +78,29 @@ public class Level1State extends GameState {
 		tb = new ArrayList<Rectangle>();
 		eventStart();
 
-		// sfx + music
+		JukeBox.stop();
+		JukeBox.play("Resources/music/level1boss.mp3");
+
 	}
 
 	private void populateEnemies() {
-		// Objekte erzeugen und Position setzen.
 		Stone s;
+		Random r = new Random();
 
 		s = new Stone(tileMap);
-		s.setPosition(100, 100);
+		s.setPosition(r.nextInt(300), r.nextInt(300));
+		enemies.add(s);
+		s = new Stone(tileMap);
+		s.setPosition(r.nextInt(300), r.nextInt(300));
+		enemies.add(s);
+		s = new Stone(tileMap);
+		s.setPosition(r.nextInt(300), r.nextInt(300));
+		enemies.add(s);
+		s = new Stone(tileMap);
+		s.setPosition(r.nextInt(300), r.nextInt(300));
+		enemies.add(s);
+		s = new Stone(tileMap);
+		s.setPosition(r.nextInt(300), r.nextInt(300));
 		enemies.add(s);
 	}
 
@@ -112,6 +127,7 @@ public class Level1State extends GameState {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
 			e.update();
+			System.out.println("update");
 			if (e.isDead()) {
 				enemies.remove(i);
 				i--;
@@ -166,7 +182,6 @@ public class Level1State extends GameState {
 			keyOpt = new BufferedReader(new FileReader("Resources/Options/keySettings.txt"));
 			s = keyOpt.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -182,7 +197,7 @@ public class Level1State extends GameState {
 			player.setRight(Keys.keyState[Keys.D]);
 		}
 		if (Keys.isPressedShort(Keys.SPACE)) {
-			missiles.add(new Missile(tileMap, player.getRotation()));
+			missiles.add(new Missile(tileMap, player.getRotation(), player));
 		}
 
 	}

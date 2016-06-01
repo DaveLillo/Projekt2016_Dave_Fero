@@ -24,7 +24,7 @@ public class Stone extends Enemy {
 		isPlayer = false;
 
 		damage = 1;
-		moveSpeed = 0.3;
+		moveSpeed = 0.2;
 
 		idleSprites = Content.Stone[0];
 
@@ -42,6 +42,8 @@ public class Stone extends Enemy {
 				flinching = false;
 			}
 		}
+
+		dir = (int) Math.random() * 4;
 
 		if (dir == 0) {
 			x -= moveSpeed;

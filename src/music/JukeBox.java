@@ -26,6 +26,10 @@ public class JukeBox {
 	}
 
 	public static void play(String path) {
+		m.loadFile(path).loop();
+	}
+
+	public static void playOnce(String path) {
 		m.loadFile(path).play();
 	}
 
