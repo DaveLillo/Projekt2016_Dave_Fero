@@ -22,7 +22,7 @@ public class OptionState extends GameState {
 
 	BufferedReader in;
 	BufferedReader keysIn;
-	private boolean soundOptions;
+	public static boolean soundOptions;
 	private boolean keysOptions;
 
 	private Font font;
@@ -44,10 +44,11 @@ public class OptionState extends GameState {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		init();
 	}
 
 	public void init() {
+		reader();
 	}
 
 	public void update() {

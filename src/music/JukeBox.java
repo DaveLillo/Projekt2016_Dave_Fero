@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 
 import ddf.minim.Minim;
+import gameState.OptionState;
 
 public class JukeBox {
 
@@ -26,11 +27,15 @@ public class JukeBox {
 	}
 
 	public static void play(String path) {
-		m.loadFile(path).loop();
+		if (!OptionState.soundOptions) {
+			m.loadFile(path).loop();
+		}
 	}
 
 	public static void playOnce(String path) {
-		m.loadFile(path).play();
+		if (!OptionState.soundOptions) {
+			m.loadFile(path).play();
+		}
 	}
 
 	public static void stop() {
