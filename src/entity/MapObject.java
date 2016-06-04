@@ -1,11 +1,9 @@
 package entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 import handlers.Keys;
-import tileMap.Tile;
 import tileMap.TileMap;
 
 public abstract class MapObject {
@@ -80,71 +78,10 @@ public abstract class MapObject {
 		last = 0;
 	}
 
-	public boolean intersects(MapObject o) {
-		Rectangle r1 = getRectangle();
-		Rectangle r2 = o.getRectangle();
-		return r1.intersects(r2);
+	public void setVelocityToZero() {
+		last300moves = new boolean[300];
+		count = 0;
 	}
-
-	public boolean intersects(Rectangle r) {
-		return getRectangle().intersects(r);
-	}
-
-	public boolean contains(MapObject o) {
-		Rectangle r1 = getRectangle();
-		Rectangle r2 = o.getRectangle();
-		return r1.contains(r2);
-	}
-
-	public boolean contains(Rectangle r) {
-		return getRectangle().contains(r);
-	}
-
-	public Rectangle getRectangle() {
-		return new Rectangle((int) x - cwidth / 2, (int) y - cheight / 2, cwidth, cheight);
-	}
-
-	public void calculateCorners(double x, double y) {
-		int leftTile = (int) (x - cwidth / 2) / tileSize;
-		int rightTile = (int) (x + cwidth / 2 - 1) / tileSize;
-		int topTile = (int) (y - cheight / 2) / tileSize;
-		int bottomTile = (int) (y + cheight / 2 - 1) / tileSize;
-		if (topTile < 0 || bottomTile >= tileMap.getNumRows() || leftTile < 0 || rightTile >= tileMap.getNumCols()) {
-			topLeft = topRight = bottomLeft = bottomRight = false;
-			return;
-		}
-		int tl = tileMap.getType(topTile, leftTile);
-		int tr = tileMap.getType(topTile, rightTile);
-		int bl = tileMap.getType(bottomTile, leftTile);
-		int br = tileMap.getType(bottomTile, rightTile);
-		topLeft = tl == Tile.BLOCKED;
-		topRight = tr == Tile.BLOCKED;
-		bottomLeft = bl == Tile.BLOCKED;
-		bottomRight = br == Tile.BLOCKED;
-	}
-
-	/*
-	 * public void checkTileMapCollision() {
-	 * 
-	 * currCol = (int) x / tileSize; currRow = (int) y / tileSize;
-	 * 
-	 * xdest = x + dx; ydest = y + dy;
-	 * 
-	 * xtemp = x; ytemp = y;
-	 * 
-	 * calculateCorners(x, ydest); if (dy < 0) { if (topLeft || topRight) { dy =
-	 * 0; ytemp = currRow * tileSize + cheight / 2; } else { ytemp += dy; } } if
-	 * (dy > 0) { if (bottomLeft || bottomRight) { dy = 0; falling = false;
-	 * ytemp = (currRow + 1) * tileSize - cheight / 2; } else { ytemp += dy; } }
-	 * 
-	 * calculateCorners(xdest, y); if (dx < 0) { if (topLeft || bottomLeft) { dx
-	 * = 0; xtemp = currCol * tileSize + cwidth / 2; } else { xtemp += dx; } }
-	 * if (dx > 0) { if (topRight || bottomRight) { dx = 0; xtemp = (currCol +
-	 * 1) * tileSize - cwidth / 2; } else { xtemp += dx; } }
-	 * 
-	 * if (!falling) { calculateCorners(x, ydest + 1); if (!bottomLeft &&
-	 * !bottomRight) { falling = true; } } }
-	 */
 
 	public int getx() {
 		return (int) x;
@@ -362,6 +299,7 @@ public abstract class MapObject {
 			g.drawImage(animation.getImage(), -10, -10, 20, 20, null);
 
 			// draw collision box
+
 			/*
 			 * Rectangle r = getRectangle(); r.x = -20; r.y = -20; g.draw(r);
 			 */
@@ -369,6 +307,7 @@ public abstract class MapObject {
 			g.setTransform(orig);
 		} else {
 			g.drawImage(animation.getImage(), (int) x, (int) y, width, height, null);
+			// g.drawRect((int) x, (int) y, width, height);
 		}
 	}
 }

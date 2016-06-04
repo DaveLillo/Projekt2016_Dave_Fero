@@ -35,7 +35,6 @@ public class GameOverState extends GameState {
 
 		g.setFont(new Font("Arial", Font.PLAIN, 12));
 		g.drawString("Your Score: " + score, 120, 120);
-		g.drawString("2016 Dave + Fero", 10, 232);
 		g.drawString("Retry", 80, 180);
 		g.drawString("Exit", 200, 180);
 		if (currentChoice == 0) {
@@ -43,6 +42,8 @@ public class GameOverState extends GameState {
 		} else {
 			g.drawRect(200, 185, 23, 0);
 		}
+		g.setFont(new Font("Arial", Font.PLAIN, 10));
+		g.drawString("2016 Dave + Fero", 10, 232);
 	}
 
 	@Override

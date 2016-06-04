@@ -11,8 +11,6 @@ import tileMap.TileMap;
 
 public class Player extends MapObject {
 
-	private ArrayList<Enemy> enemies;
-
 	private int lives;
 	private int health;
 	private int maxHealth;
@@ -27,12 +25,11 @@ public class Player extends MapObject {
 
 	private ArrayList<BufferedImage[]> sprites;
 	private final int[] NUMFRAMES = { 1 };
-	private final int[] FRAMEWIDTHS = { 100 };
-	private final int[] FRAMEHEIGHTS = { 100 };
+	private final int[] FRAMEWIDTHS = { 30 };
+	private final int[] FRAMEHEIGHTS = { 30 };
 	private final int[] SPRITEDELAYS = { -1 };
 
 	private Rectangle ar;
-	private Rectangle aur;
 	private Rectangle cr;
 
 	private static final int IDLE = 0;
@@ -45,7 +42,7 @@ public class Player extends MapObject {
 		ar = new Rectangle(0, 0, 0, 0);
 		ar.width = 30;
 		ar.height = 20;
-		aur = new Rectangle((int) x - 15, (int) y - 45, 30, 30);
+		// aur = new Rectangle((int) x - 15, (int) y - 45, 30, 30);
 		cr = new Rectangle(0, 0, 0, 0);
 		cr.width = 50;
 		cr.height = 40;
@@ -91,13 +88,12 @@ public class Player extends MapObject {
 		// load sfx
 	}
 
-	public void init(ArrayList<Enemy> enemies, ArrayList<EnergyParticle> energyParticles) {
-		this.enemies = enemies;
-		this.energyParticles = energyParticles;
-	}
-
 	public int getHealth() {
 		return health;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
 	}
 
 	public int getMaxHealth() {
@@ -221,8 +217,6 @@ public class Player extends MapObject {
 		time++;
 
 		getNextPosition();
-		// checkTileMapCollision();
-		// setPosition(xtemp, ytemp);
 
 		if (dx == 0) {
 			x = (int) x;

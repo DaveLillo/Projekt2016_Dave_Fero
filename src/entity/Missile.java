@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -29,16 +30,16 @@ public class Missile extends MapObject {
 	}
 
 	private void init() {
-		x = player.getx();
-		y = player.gety();
+		x = player.getx() + 10;
+		y = player.gety() + 10;
 		moveSpeed = 5;
+		width = 2;
+		height = 25;
 
 	}
 
 	public void draw(Graphics2D g) {
 		update();
-		// System.out.println("x: " + x + ", y: " + y + ", rotation: " +
-		// rotation);
 		double rotationRequired = Math.toRadians(rotation);
 		AffineTransform orig = g.getTransform();
 		g.translate(x, y);
@@ -47,21 +48,29 @@ public class Missile extends MapObject {
 		g.setTransform(orig);
 	}
 
+	public Rectangle getRectangle() {
+		return new Rectangle((int) x, (int) y, getHeight(), getWidth());
+	}
+
 	private void update() {
-		if (rotation >= 360)
+		if (rotation >= 360) {
 			rotation -= 360;
+		}
+		if (rotation < 0) {
+			rotation += 360;
+		}
 		if (rotation == 0)
-			y += moveSpeed;
+			y -= moveSpeed;
 		else if (rotation < 90) {
 			x += moveSpeed;
 			y -= moveSpeed;
 		} else if (rotation == 90)
 			x += moveSpeed;
-		else if (rotation > 90 && rotation <= 180) {
+		else if (rotation > 90 && rotation < 180) {
 			x += moveSpeed;
 			y += moveSpeed;
 		} else if (rotation == 180)
-			y -= moveSpeed;
+			y += moveSpeed;
 		else if (rotation > 180 && rotation < 270) {
 			x -= moveSpeed;
 			y += moveSpeed;

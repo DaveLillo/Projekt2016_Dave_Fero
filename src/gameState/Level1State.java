@@ -1,6 +1,7 @@
 package gameState;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
@@ -58,9 +59,8 @@ public class Level1State extends GameState {
 		tileMap.setTween(1);
 
 		player = new Player(tileMap);
-		player.setPosition(140, 100);
-		player.setHealth(1);
-		player.setLives(3);
+		player.setPosition(160, 120);
+		player.setHealth(3);
 		player.setTime(0);
 
 		enemies = new ArrayList<Enemy>();
@@ -70,8 +70,6 @@ public class Level1State extends GameState {
 		missiles = new ArrayList<Missile>();
 
 		energyParticles = new ArrayList<EnergyParticle>();
-
-		player.init(enemies, energyParticles);
 		explosions = new ArrayList<Explosion>();
 
 		eventStart = true;
@@ -134,17 +132,48 @@ public class Level1State extends GameState {
 			}
 		}
 
-		/*
-		 * for (int i = 0; i < eprojectiles.size(); i++) { EnemyProjectile ep =
-		 * eprojectiles.get(i); ep.update(); if (ep.shouldRemove()) {
-		 * eprojectiles.remove(i); i--; } }
-		 */
+		checkCollisions();
+	}
+
+	public void checkCollisions() {
+		// Player Collision
+		Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety() - 10, player.getWidth() - 10,
+				player.getHeight() - 10);
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			Rectangle rstone = new Rectangle(e.getx(), e.gety(), e.getWidth(), e.getHeight());
+			if (rstone.intersects(rplayer)) {
+				if (player.getHealth() == 1) {
+					gsm.setState(GameStateManager.GAMEOVERSTATE);
+				} else {
+					player.setHealth(player.getHealth() - 1);
+					player.setPosition(160, 120);
+					player.setRotation(0);
+					player.setVelocityToZero();
+				}
+				enemies.remove(i);
+			}
+		}
 	}
 
 	public void draw(Graphics2D g) {
 		stars.draw(g);
 
+		/*
+		 * Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety() -
+		 * 10, player.getWidth() - 10, player.getHeight() - 10);
+		 * g.rotate(player.getRotation()); System.out.println(player.getWidth()
+		 * + " " + player.getHeight()); g.draw(rplayer);
+		 * g.rotate(-player.getRotation()); for (int i = 0; i < enemies.size();
+		 * i++) { Enemy e = enemies.get(i); Rectangle rstone = new
+		 * Rectangle(e.getx(), e.gety(), e.getWidth(), e.getHeight());
+		 * g.draw(rstone); if (rstone.intersects(rplayer)) {
+		 * System.out.println("collision"); enemies.remove(i); } }
+		 */
+
 		tileMap.draw(g);
+
+		g.setColor(Color.WHITE);
 
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).draw(g);
@@ -152,6 +181,7 @@ public class Level1State extends GameState {
 
 		for (int i = 0; i < missiles.size(); i++) {
 			missiles.get(i).draw(g);
+			g.draw(missiles.get(i).getRectangle());
 		}
 
 		/*
@@ -164,6 +194,10 @@ public class Level1State extends GameState {
 		}
 
 		player.draw(g);
+
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", Font.PLAIN, 10));
+		g.drawString("Lives: " + player.getHealth(), 1, 10);
 
 		g.setColor(Color.BLACK);
 		for (int i = 0; i < tb.size(); i++) {
