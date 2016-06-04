@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import javax.imageio.ImageIO;
 
@@ -22,6 +24,7 @@ public class MenuState extends GameState {
 	private Font titleFont;
 	private Font font;
 	private Font font2;
+	public static boolean soundOptions;
 
 	private BufferedImage image;
 
@@ -40,7 +43,13 @@ public class MenuState extends GameState {
 			titleFont = new Font("Times New Roman", Font.PLAIN, 28);
 			font = new Font("Arial", Font.PLAIN, 14);
 			font2 = new Font("Arial", Font.PLAIN, 10);
-
+			@SuppressWarnings("resource")
+			BufferedReader in = new BufferedReader(new FileReader("Resources/Options/musicSettings.txt"));
+			if (in.readLine().equals("N")) {
+				soundOptions = false;
+			} else {
+				soundOptions = true;
+			}
 			JukeBox.stop();
 			JukeBox.play("Resources/music/level1v2.mp3");
 

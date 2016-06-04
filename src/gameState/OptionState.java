@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 
 import handlers.Keys;
 import spiel.GamePanel;
@@ -24,6 +22,8 @@ public class OptionState extends GameState {
 	BufferedReader keysIn;
 	public static boolean soundOptions;
 	private boolean keysOptions;
+	// true = space
+	private boolean spaceOption;
 
 	private Font font;
 
@@ -34,13 +34,6 @@ public class OptionState extends GameState {
 			titleColor = Color.WHITE;
 			titleFont = new Font("Times New Roman", Font.PLAIN, 28);
 			font = new Font("Arial", Font.PLAIN, 14);
-
-			// load sound fx
-			/*
-			 * JukeBox.load("/SFX/menuoption.mp3", "menuoption");
-			 * JukeBox.load("/SFX/menuselect.mp3", "menuselect");
-			 */
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,55 +62,47 @@ public class OptionState extends GameState {
 			} else {
 				keysOptions = true;
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void draw(Graphics2D g) {
-		// draw bg
 		reader();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
-		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-
-		// gif background
-
-		// draw menu options
 		g.setFont(font);
 
-		// draw floating head
-
-		// options
-
 		g.setColor(titleColor);
-		g.drawString("Sound: ", 110, 45);
+		g.drawString("Sound: ", 110, 55);
 		if (!soundOptions) {
-			g.drawString("OFF", 170, 45);
+			g.drawString("OFF", 160, 55);
 		} else {
-			g.drawString("ON", 170, 45);
+			g.drawString("ON", 160, 55);
 		}
 		g.drawString(options2[1] + ": ", 110, 80);
-		g.drawString(options2[2] + ": Spacebar", 110, 105);
+		if (spaceOption) {
+			g.drawString(options2[2] + ": Spacebar", 110, 105);
+		} else {
+			g.drawString(options2[2] + ": Mouse", 110, 105);
+		}
 		if (!keysOptions)
 			g.drawString("Arrow Keys", 150, 80);
 		else
 			g.drawString("WASD", 150, 80);
-		g.drawString(options2[3], 140, 170);
+		g.drawString(options2[3], 130, 170);
 
 		if (currentOptionChoice == 0) {
-			g.drawRect(110, 50, 100, 0);
+			g.drawRect(110, 60, 80, 0);
 		} else if (currentOptionChoice == 1) {
-			g.drawRect(110, 85, 60, 0);
+			g.drawRect(110, 85, 115, 0);
 		} else if (currentOptionChoice == 2) {
-			g.drawRect(140, 175, 55, 0);
+			g.drawRect(110, 110, 110, 0);
+		} else if (currentOptionChoice == 3) {
+			g.drawRect(130, 175, 40, 0);
 		}
 
 	}
@@ -131,11 +116,7 @@ public class OptionState extends GameState {
 					fos.write("Y".getBytes());
 					fos.flush();
 					fos.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
@@ -145,11 +126,7 @@ public class OptionState extends GameState {
 					fos.write("N".getBytes());
 					fos.flush();
 					fos.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -162,11 +139,7 @@ public class OptionState extends GameState {
 					fos1.write("1".getBytes());
 					fos1.flush();
 					fos1.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
@@ -176,17 +149,21 @@ public class OptionState extends GameState {
 					fos1.write("0".getBytes());
 					fos1.flush();
 					fos1.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
 		if (currentOptionChoice == 2) {
+			if (spaceOption) {
+				spaceOption = false;
+			} else {
+				spaceOption = true;
+			}
+		}
+
+		if (currentOptionChoice == 3) {
 			gsm.setState(GameStateManager.MENUSTATE);
 		}
 	}
@@ -206,7 +183,7 @@ public class OptionState extends GameState {
 			}
 		}
 		if (Keys.isPressedShort(Keys.ESCAPE)) {
-			currentOptionChoice = 2;
+			currentOptionChoice = 3;
 			select();
 		}
 	}
