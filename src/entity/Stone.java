@@ -36,14 +36,40 @@ public class Stone extends Enemy {
 	}
 
 	public void update() {
-		if (flinching) {
-			flinchCount++;
-			if (flinchCount == 6) {
-				flinching = false;
+		/**
+		 * 0 = links oben 1 = links unten 2 = rechts unten 3 = rechts oben
+		 */
+		if (x < 0) {
+			if (dir == 0) {
+				dir = 3;
+			} else {
+				dir = 2;
 			}
 		}
 
-		dir = (int) Math.random() * 4;
+		if (x > 280) {
+			if (dir == 3) {
+				dir = 0;
+			} else {
+				dir = 1;
+			}
+		}
+
+		if (y < 0) {
+			if (dir == 0) {
+				dir = 1;
+			} else {
+				dir = 2;
+			}
+		}
+
+		if (y > 200) {
+			if (dir == 2) {
+				dir = 3;
+			} else {
+				dir = 0;
+			}
+		}
 
 		if (dir == 0) {
 			x -= moveSpeed;
@@ -62,7 +88,12 @@ public class Stone extends Enemy {
 	}
 
 	public void draw(Graphics2D g) {
+		update();
 		super.draw(g);
+	}
+
+	public double getRadius() {
+		return width / 2;
 	}
 
 }

@@ -18,7 +18,7 @@ public class GameOverState extends GameState {
 	}
 
 	public void init() {
-		score = 4;
+		score = Level1State.SCORE;
 	}
 
 	public void update() {

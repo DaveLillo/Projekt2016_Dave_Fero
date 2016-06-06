@@ -18,7 +18,6 @@ public class Player extends MapObject {
 	private boolean flinching;
 	private long flinchCount;
 	private int score;
-	private ArrayList<EnergyParticle> energyParticles;
 	private long time;
 
 	private boolean attacking;
@@ -62,8 +61,6 @@ public class Player extends MapObject {
 
 		lives = 3;
 		health = maxHealth = 1;
-
-		energyParticles = new ArrayList<EnergyParticle>();
 
 		try {
 			BufferedImage spritesheet = ImageIO
@@ -224,16 +221,9 @@ public class Player extends MapObject {
 
 		if (flinching) {
 			flinchCount++;
-			if (flinchCount > 120) {
+			if (flinchCount > 180) {
 				flinching = false;
-			}
-		}
-
-		for (int i = 0; i < energyParticles.size(); i++) {
-			energyParticles.get(i).update();
-			if (energyParticles.get(i).shouldRemove()) {
-				energyParticles.remove(i);
-				i--;
+				flinchCount = 0;
 			}
 		}
 
@@ -254,15 +244,21 @@ public class Player extends MapObject {
 	}
 
 	public void draw(Graphics2D g) {
-		for (int i = 0; i < energyParticles.size(); i++) {
-			energyParticles.get(i).draw(g);
-		}
 
 		if (flinching) {
-			if (flinchCount % 10 < 5)
+			if (flinchCount % 10 < 5) {
 				return;
+			}
 		}
 
 		super.draw(g);
+	}
+
+	public boolean isFlinching() {
+		return flinching;
+	}
+
+	public void setFlinching(boolean b) {
+		flinching = b;
 	}
 }

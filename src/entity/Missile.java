@@ -14,14 +14,16 @@ public class Missile extends MapObject {
 
 	public BufferedImage missile;
 	Player player;
+	public double missilestartx;
+	public double missilestarty;
+	public double missileendx;
+	public double missileendy;
 
 	public Missile(TileMap tm, int rotation, Player player) {
 		super(tm);
-		// TODO Auto-generated constructor stub
 		try {
 			missile = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.rotation = rotation;
@@ -30,19 +32,79 @@ public class Missile extends MapObject {
 	}
 
 	private void init() {
-		x = player.getx() + 10;
-		y = player.gety() + 10;
 		moveSpeed = 5;
 		width = 2;
 		height = 25;
+		updateRotation();
+		if (rotation == 0) {
+			missilestartx = (int) player.getx() + 10;
+			missilestarty = (int) player.gety() - 10;
+		} else if (rotation < 90) {
+			missilestartx = (int) player.getx() + 10;
+			missilestarty = (int) player.gety();
+		} else if (rotation == 90) {
+			missilestartx = (int) player.getx() + 10;
+			missilestarty = (int) player.gety() + 10;
+		} else if (rotation < 180) {
+			missilestartx = (int) player.getx();
+			missilestarty = (int) player.gety() + 10;
+		} else if (rotation == 180) {
+			missilestartx = (int) player.getx() - 10;
+			missilestarty = (int) player.gety() + 10;
+		} else if (rotation < 270) {
+			missilestartx = (int) player.getx() - 10;
+			missilestarty = (int) player.gety();
+		} else if (rotation == 270) {
+			missilestartx = (int) player.getx() - 10;
+			missilestarty = (int) player.gety() - 10;
+		} else if (rotation < 360) {
+			missilestartx = (int) player.getx();
+			missilestarty = (int) player.gety() - 10;
+		}
+		calculate();
+	}
 
+	private void calculate() {
+		if (rotation == 0) {
+			missileendx = missilestartx;
+			missileendy = missilestarty - width;
+		} else if (rotation < 90) {
+			double a = width * Math.cos(Math.toRadians(90 - rotation));
+			double b = Math.sqrt(width * width - a * a);
+			missileendx = missilestartx + a;
+			missileendy = missilestarty - b;
+		} else if (rotation == 90) {
+			missileendx = missilestartx + width;
+			missileendy = missilestarty;
+		} else if (rotation > 90 && rotation < 180) {
+			double a = width * Math.cos(Math.toRadians(90 - (rotation - 90)));
+			double b = Math.sqrt(width * width - a * a);
+			missileendx = missilestartx + b;
+			missileendy = missilestarty + a;
+		} else if (rotation == 180) {
+			missileendx = missilestartx;
+			missileendy = missilestarty + width;
+		} else if (rotation > 180 && rotation < 270) {
+			double a = width * Math.cos(Math.toRadians(270 - rotation));
+			double b = Math.sqrt(width * width - a * a);
+			missileendx = missilestartx - a;
+			missileendy = missilestarty + b;
+		} else if (rotation == 270) {
+			missileendx = missilestartx - width;
+			missileendy = missilestarty;
+		} else if (rotation > 270 && rotation < 360) {
+			double a = width * Math.cos(Math.toRadians(90 - rotation - 270));
+			double b = Math.sqrt(width * width - a * a);
+			missileendx = missilestartx - b;
+			missileendy = missilestarty + a;
+		}
 	}
 
 	public void draw(Graphics2D g) {
 		update();
 		double rotationRequired = Math.toRadians(rotation);
 		AffineTransform orig = g.getTransform();
-		g.translate(x, y);
+		g.translate(missilestartx, missilestarty);
 		g.rotate(rotationRequired);
 		g.drawImage(missile, -10, -10, 2, 25, null);
 		g.setTransform(orig);
@@ -52,33 +114,19 @@ public class Missile extends MapObject {
 		return new Rectangle((int) x, (int) y, getHeight(), getWidth());
 	}
 
-	private void update() {
+	private void updateRotation() {
 		if (rotation >= 360) {
 			rotation -= 360;
 		}
 		if (rotation < 0) {
 			rotation += 360;
 		}
-		if (rotation == 0)
-			y -= moveSpeed;
-		else if (rotation < 90) {
-			x += moveSpeed;
-			y -= moveSpeed;
-		} else if (rotation == 90)
-			x += moveSpeed;
-		else if (rotation > 90 && rotation < 180) {
-			x += moveSpeed;
-			y += moveSpeed;
-		} else if (rotation == 180)
-			y += moveSpeed;
-		else if (rotation > 180 && rotation < 270) {
-			x -= moveSpeed;
-			y += moveSpeed;
-		} else if (rotation == 270)
-			x -= moveSpeed;
-		else if (rotation > 270 && rotation < 360) {
-			x -= moveSpeed;
-			y -= moveSpeed;
-		}
+	}
+
+	private void update() {
+		updateRotation();
+		missilestartx = missileendx;
+		missilestarty = missileendy;
+		calculate();
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import entity.Enemy;
-import entity.EnergyParticle;
 import entity.Explosion;
 import entity.Missile;
 import entity.Player;
@@ -29,18 +29,16 @@ public class Level1State extends GameState {
 	private Player player;
 	private TileMap tileMap;
 	private ArrayList<Enemy> enemies;
-	// private ArrayList<EnemyProjectile> eprojectiles;
-	private ArrayList<EnergyParticle> energyParticles;
 	private ArrayList<Explosion> explosions;
 	private ArrayList<Missile> missiles;
 
 	private boolean blockInput = false;
-	private int eventCount = 0;
-	private boolean eventStart;
-	private ArrayList<Rectangle> tb;
-	private boolean eventFinish;
-	private boolean eventDead;
 	private BufferedReader keyOpt;
+
+	private int currStage;
+	private int maxStage = 5;
+
+	public static int SCORE;
 
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
@@ -68,38 +66,23 @@ public class Level1State extends GameState {
 		populateEnemies();
 
 		missiles = new ArrayList<Missile>();
-
-		energyParticles = new ArrayList<EnergyParticle>();
 		explosions = new ArrayList<Explosion>();
-
-		eventStart = true;
-		tb = new ArrayList<Rectangle>();
-		eventStart();
 
 		JukeBox.stop();
 		JukeBox.play("Resources/music/level1boss.mp3");
 
+		player.setFlinching(true);
 	}
 
 	private void populateEnemies() {
 		Stone s;
 		Random r = new Random();
 
-		s = new Stone(tileMap);
-		s.setPosition(r.nextInt(300), r.nextInt(300));
-		enemies.add(s);
-		s = new Stone(tileMap);
-		s.setPosition(r.nextInt(300), r.nextInt(300));
-		enemies.add(s);
-		s = new Stone(tileMap);
-		s.setPosition(r.nextInt(300), r.nextInt(300));
-		enemies.add(s);
-		s = new Stone(tileMap);
-		s.setPosition(r.nextInt(300), r.nextInt(300));
-		enemies.add(s);
-		s = new Stone(tileMap);
-		s.setPosition(r.nextInt(300), r.nextInt(300));
-		enemies.add(s);
+		for (int i = 0; i < currStage + 3; i++) {
+			s = new Stone(tileMap);
+			s.setPosition(r.nextInt(280), r.nextInt(200));
+			enemies.add(s);
+		}
 	}
 
 	public void update() {
@@ -109,40 +92,41 @@ public class Level1State extends GameState {
 			// eventDead = blockInput = true;
 		}
 
-		if (eventStart)
-			eventStart();
-		if (eventDead)
-			eventDead();
-		if (eventFinish)
-			eventFinish();
-
 		player.update();
 
 		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
 		tileMap.update();
 		tileMap.fixBounds();
 
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy e = enemies.get(i);
-			e.update();
-			if (e.isDead()) {
-				enemies.remove(i);
-				i--;
-				explosions.add(new Explosion(tileMap, e.getx(), e.gety()));
+		checkCollisions();
+
+		if (enemies.size() == 0) {
+			if (currStage == maxStage) {
+				currStage = 0;
+			} else {
+				currStage++;
+				init();
 			}
 		}
 
-		checkCollisions();
+		for (int i = 0; i < missiles.size(); i++) {
+			if (missiles.get(i).getx() < -100.0 || missiles.get(i).getx() > 500 || missiles.get(i).gety() > 500
+					|| missiles.get(i).gety() < -100) {
+				missiles.remove(i);
+			}
+		}
 	}
 
 	public void checkCollisions() {
-		// Player Collision
-		Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety() - 10, player.getWidth() - 10,
+		Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety() - 15, player.getWidth() - 15,
 				player.getHeight() - 10);
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
 			Rectangle rstone = new Rectangle(e.getx(), e.gety(), e.getWidth(), e.getHeight());
 			if (rstone.intersects(rplayer)) {
+				if (player.isFlinching()) {
+					break;
+				}
 				if (player.getHealth() == 1) {
 					gsm.setState(GameStateManager.GAMEOVERSTATE);
 				} else {
@@ -150,8 +134,26 @@ public class Level1State extends GameState {
 					player.setPosition(160, 120);
 					player.setRotation(0);
 					player.setVelocityToZero();
+					player.setFlinching(true);
 				}
-				enemies.remove(i);
+			}
+		}
+
+		for (int i = 0; i < missiles.size(); i++) {
+			Missile m = missiles.get(i);
+			for (int j = 0; j < enemies.size(); j++) {
+				Stone s = (Stone) enemies.get(j);
+				double d = Line2D.ptSegDistSq(m.missilestartx, m.missilestarty, m.missileendx, m.missileendy,
+						s.getx() + 10, s.gety() + 10);
+				System.out.println("start x: " + m.missilestartx + " end x: " + m.missileendx + " start y: "
+						+ m.missilestarty + " end y: " + m.missileendy);
+				System.out.println(d);
+				if (Math.abs(d) < s.getRadius() * 5) {
+					enemies.remove(j);
+					missiles.remove(i);
+					SCORE++;
+					break;
+				}
 			}
 		}
 	}
@@ -181,13 +183,7 @@ public class Level1State extends GameState {
 
 		for (int i = 0; i < missiles.size(); i++) {
 			missiles.get(i).draw(g);
-			g.draw(missiles.get(i).getRectangle());
 		}
-
-		/*
-		 * for (int i = 0; i < eprojectiles.size(); i++) {
-		 * eprojectiles.get(i).draw(g); }
-		 */
 
 		for (int i = 0; i < explosions.size(); i++) {
 			explosions.get(i).draw(g);
@@ -198,11 +194,7 @@ public class Level1State extends GameState {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.PLAIN, 10));
 		g.drawString("Lives: " + player.getHealth(), 1, 10);
-
-		g.setColor(Color.BLACK);
-		for (int i = 0; i < tb.size(); i++) {
-			g.fill(tb.get(i));
-		}
+		g.drawString("Stage " + (currStage + 1), 135, 10);
 	}
 
 	public void handleInput() {
@@ -233,88 +225,5 @@ public class Level1State extends GameState {
 			missiles.add(new Missile(tileMap, player.getRotation(), player));
 		}
 
-	}
-
-	private void reset() {
-		player.reset();
-		player.setPosition(GamePanel.WIDTH * GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE);
-		populateEnemies();
-		blockInput = true;
-		eventCount = 0;
-		tileMap.setShaking(false, 0);
-		eventStart = true;
-		eventStart();
-	}
-
-	private void eventStart() {
-		eventCount++;
-		if (eventCount == 1) {
-			tb.clear();
-			tb.add(new Rectangle(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT / 2));
-			tb.add(new Rectangle(0, 0, GamePanel.WIDTH / 2, GamePanel.HEIGHT));
-			tb.add(new Rectangle(0, GamePanel.HEIGHT / 2, GamePanel.WIDTH, GamePanel.HEIGHT / 2));
-			tb.add(new Rectangle(GamePanel.WIDTH / 2, 0, GamePanel.WIDTH / 2, GamePanel.HEIGHT));
-		}
-
-		if (eventCount > 1 && eventCount < 60) {
-			tb.get(0).height -= 4;
-			tb.get(1).width -= 6;
-			tb.get(2).y += 4;
-			tb.get(3).x += 6;
-		}
-
-		if (eventCount == 60) {
-			eventStart = blockInput = false;
-			eventCount = 0;
-			tb.clear();
-		}
-	}
-
-	private void eventDead() {
-		eventCount++;
-		if (eventCount == 1) {
-			player.setDead();
-			player.stop();
-		}
-
-		if (eventCount == 60) {
-			tb.clear();
-			tb.add(new Rectangle(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2, 0, 0));
-		} else if (eventCount > 60) {
-			tb.get(0).x -= 6;
-			tb.get(0).y -= 4;
-			tb.get(0).width += 12;
-			tb.get(0).height += 8;
-		}
-
-		if (eventCount >= 120) {
-			if (player.getLives() == 0) {
-				gsm.setState(GameStateManager.MENUSTATE);
-			} else {
-				eventDead = blockInput = false;
-				eventCount = 0;
-				player.loseLife();
-				reset();
-			}
-		}
-	}
-
-	private void eventFinish() {
-		eventCount++;
-		if (eventCount == 1) {
-			player.stop();
-		} else if (eventCount == 120) {
-			tb.clear();
-			tb.add(new Rectangle(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2, 0, 0));
-		} else if (eventCount > 120) {
-			tb.get(0).x -= 6;
-			tb.get(0).y -= 4;
-			tb.get(0).width += 12;
-			tb.get(0).height += 8;
-		}
-
-		if (eventCount == 180) {
-			// save stats for next level
-		}
 	}
 }

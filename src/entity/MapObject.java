@@ -306,7 +306,7 @@ public abstract class MapObject {
 
 			g.setTransform(orig);
 		} else {
-			g.drawImage(animation.getImage(), (int) x, (int) y, width, height, null);
+			g.drawImage(animation.getImage(), (int) x - 10, (int) y - 10, width, height, null);
 			// g.drawRect((int) x, (int) y, width, height);
 		}
 	}
