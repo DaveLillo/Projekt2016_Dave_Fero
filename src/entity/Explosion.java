@@ -23,8 +23,8 @@ public class Explosion extends MapObject {
 		this.x = x;
 		this.y = y;
 
-		width = 30;
-		height = 30;
+		length = 30;
+		fatness = 30;
 
 		speed = 2;
 		diagSpeed = 1.41;
@@ -67,8 +67,8 @@ public class Explosion extends MapObject {
 	public void draw(Graphics2D g) {
 		setMapPosition();
 		for (int i = 0; i < points.length; i++) {
-			g.drawImage(animation.getImage(), (int) (points[i].x + xmap - width / 2),
-					(int) (points[i].y + ymap - height / 2), null);
+			g.drawImage(animation.getImage(), (int) (points[i].x + xmap - length / 2),
+					(int) (points[i].y + ymap - fatness / 2), null);
 		}
 	}
 }

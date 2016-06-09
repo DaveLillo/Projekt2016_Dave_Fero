@@ -21,8 +21,8 @@ public abstract class MapObject {
 	protected double dy;
 
 	// dimensions
-	protected int width;
-	protected int height;
+	protected int length;
+	protected int fatness;
 
 	// collision box
 	protected int cwidth;
@@ -92,11 +92,11 @@ public abstract class MapObject {
 	}
 
 	public int getWidth() {
-		return width;
+		return length;
 	}
 
 	public int getHeight() {
-		return height;
+		return fatness;
 	}
 
 	public int getCWidth() {
@@ -190,57 +190,20 @@ public abstract class MapObject {
 		double a;
 		double b;
 		if (up) { // vorwärts
-			if (rotation == 180) {
-				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
-				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				if (!slowDown) {
-					x += a / 4;
-					y += b / 4;
-				} else {
-					x += a / factor;
-					y += b / factor;
-				}
-			} else if (rotation > 90 && rotation < 180) { // rechts unten
-				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(rotation - 90));
-				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				if (!slowDown) {
-					x += a / 2;
-					y += b / 2;
-				} else {
-					x += a / factor;
-					y += b / factor;
-				}
-			} else if (rotation > 180 && rotation < 270) { // links unten
-				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (rotation - 180)));
-				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				if (!slowDown) {
-					x -= a / 2;
-					y += b / 2;
-				} else {
-					x -= a / factor;
-					y += b / factor;
-				}
-			} else if (rotation > 270 && rotation < 360) { // links oben
-				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - (360 - rotation)));
-				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				if (!slowDown) {
-					x -= a / 2;
-					y -= b / 2;
-				} else {
-					x -= a / factor;
-					y -= b / factor;
-				}
-			} else { // rechts oben
-				a = (count / 10 * velocityConst) * Math.cos(Math.toRadians(90 - rotation));
-				b = Math.sqrt((Math.pow((count / 10 * velocityConst), 2) - Math.pow(a, 2)));
-				if (!slowDown) {
-					x += a / 2;
-					y -= b / 2;
-				} else {
-					x += a / factor;
-					y -= b / factor;
-				}
+
+			double unitx = Math.cos(Math.toRadians(rotation));
+			double unity = Math.sin(Math.toRadians(rotation));
+
+			double change = (count / 10 * velocityConst);
+
+			if (!slowDown) {
+				change /= 2;
+			} else {
+				change /= factor;
 			}
+
+			x += change * unitx;
+			y += change * unity;
 		} else { // rückwärts
 			// nï¿½chstes berechnen und kleiner machen
 		}
@@ -306,7 +269,7 @@ public abstract class MapObject {
 
 			g.setTransform(orig);
 		} else {
-			g.drawImage(animation.getImage(), (int) x - 10, (int) y - 10, width, height, null);
+			g.drawImage(animation.getImage(), (int) x - 10, (int) y - 10, length, fatness, null);
 			// g.drawRect((int) x, (int) y, width, height);
 		}
 	}

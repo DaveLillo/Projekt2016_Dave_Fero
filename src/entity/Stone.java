@@ -16,8 +16,8 @@ public class Stone extends Enemy {
 	public Stone(TileMap tm) {
 		super(tm);
 		health = 3;
-		width = 30;
-		height = 30;
+		length = 30;
+		fatness = 30;
 		cwidth = 30;
 		cheight = 30;
 
@@ -93,7 +93,7 @@ public class Stone extends Enemy {
 	}
 
 	public double getRadius() {
-		return width / 2;
+		return length / 2;
 	}
 
 }

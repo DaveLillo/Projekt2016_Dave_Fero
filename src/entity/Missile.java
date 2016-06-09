@@ -32,72 +32,27 @@ public class Missile extends MapObject {
 	}
 
 	private void init() {
-		moveSpeed = 5;
-		width = 2;
-		height = 25;
+		moveSpeed = 1;
+		length = 25;
+		fatness = 2;
 		updateRotation();
-		if (rotation == 0) {
-			missilestartx = (int) player.getx() + 10;
-			missilestarty = (int) player.gety() - 10;
-		} else if (rotation < 90) {
-			missilestartx = (int) player.getx() + 10;
-			missilestarty = (int) player.gety();
-		} else if (rotation == 90) {
-			missilestartx = (int) player.getx() + 10;
-			missilestarty = (int) player.gety() + 10;
-		} else if (rotation < 180) {
-			missilestartx = (int) player.getx();
-			missilestarty = (int) player.gety() + 10;
-		} else if (rotation == 180) {
-			missilestartx = (int) player.getx() - 10;
-			missilestarty = (int) player.gety() + 10;
-		} else if (rotation < 270) {
-			missilestartx = (int) player.getx() - 10;
-			missilestarty = (int) player.gety();
-		} else if (rotation == 270) {
-			missilestartx = (int) player.getx() - 10;
-			missilestarty = (int) player.gety() - 10;
-		} else if (rotation < 360) {
-			missilestartx = (int) player.getx();
-			missilestarty = (int) player.gety() - 10;
-		}
+
+		missilestartx = player.getx();
+		missilestarty = player.gety();
+
 		calculate();
 	}
 
 	private void calculate() {
-		if (rotation == 0) {
-			missileendx = missilestartx;
-			missileendy = missilestarty - width;
-		} else if (rotation < 90) {
-			double a = width * Math.cos(Math.toRadians(90 - rotation));
-			double b = Math.sqrt(width * width - a * a);
-			missileendx = missilestartx + a;
-			missileendy = missilestarty - b;
-		} else if (rotation == 90) {
-			missileendx = missilestartx + width;
-			missileendy = missilestarty;
-		} else if (rotation > 90 && rotation < 180) {
-			double a = width * Math.cos(Math.toRadians(90 - (rotation - 90)));
-			double b = Math.sqrt(width * width - a * a);
-			missileendx = missilestartx + b;
-			missileendy = missilestarty + a;
-		} else if (rotation == 180) {
-			missileendx = missilestartx;
-			missileendy = missilestarty + width;
-		} else if (rotation > 180 && rotation < 270) {
-			double a = width * Math.cos(Math.toRadians(270 - rotation));
-			double b = Math.sqrt(width * width - a * a);
-			missileendx = missilestartx - a;
-			missileendy = missilestarty + b;
-		} else if (rotation == 270) {
-			missileendx = missilestartx - width;
-			missileendy = missilestarty;
-		} else if (rotation > 270 && rotation < 360) {
-			double a = width * Math.cos(Math.toRadians(90 - rotation - 270));
-			double b = Math.sqrt(width * width - a * a);
-			missileendx = missilestartx - b;
-			missileendy = missilestarty + a;
-		}
+
+		double unitx = Math.cos(Math.toRadians(rotation));
+		double unity = Math.sin(Math.toRadians(rotation));
+
+		double offsetx = unitx * length;
+		double offsety = unity * length;
+
+		missileendx = missilestartx + offsetx;
+		missileendy = missilestarty + offsety;
 	}
 
 	public void draw(Graphics2D g) {
@@ -106,7 +61,7 @@ public class Missile extends MapObject {
 		AffineTransform orig = g.getTransform();
 		g.translate(missilestartx, missilestarty);
 		g.rotate(rotationRequired);
-		g.drawImage(missile, -10, -10, 2, 25, null);
+		g.drawImage(missile, 0, -1, 25, 2, null);
 		g.setTransform(orig);
 	}
 
@@ -115,18 +70,13 @@ public class Missile extends MapObject {
 	}
 
 	private void updateRotation() {
-		if (rotation >= 360) {
-			rotation -= 360;
-		}
-		if (rotation < 0) {
-			rotation += 360;
-		}
+		rotation %= 360;
 	}
 
 	private void update() {
-		updateRotation();
 		missilestartx = missileendx;
 		missilestarty = missileendy;
+
 		calculate();
 	}
 }

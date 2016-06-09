@@ -14,7 +14,6 @@ public class Player extends MapObject {
 	private int lives;
 	private int health;
 	private int maxHealth;
-	private int damage;
 	private boolean flinching;
 	private long flinchCount;
 	private int score;
@@ -46,8 +45,8 @@ public class Player extends MapObject {
 		cr.width = 50;
 		cr.height = 40;
 
-		width = 30;
-		height = 30;
+		length = 30;
+		fatness = 30;
 		cwidth = 40;
 		cheight = 40;
 
@@ -56,8 +55,6 @@ public class Player extends MapObject {
 		stopSpeed = 1.6;
 
 		facingRight = true;
-
-		damage = 1;
 
 		lives = 3;
 		health = maxHealth = 1;
@@ -152,8 +149,8 @@ public class Player extends MapObject {
 		currentAction = i;
 		animation.setFrames(sprites.get(currentAction));
 		animation.setDelay(SPRITEDELAYS[currentAction]);
-		width = FRAMEWIDTHS[currentAction];
-		height = FRAMEHEIGHTS[currentAction];
+		length = FRAMEWIDTHS[currentAction];
+		fatness = FRAMEHEIGHTS[currentAction];
 	}
 
 	public void hit(int damage) {

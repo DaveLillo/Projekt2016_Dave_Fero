@@ -40,6 +40,8 @@ public class Level1State extends GameState {
 
 	public static int SCORE;
 
+	private boolean alreadyplayed;
+
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
 		init();
@@ -56,11 +58,6 @@ public class Level1State extends GameState {
 				tileMap.getHeight() - 2 * tileMap.getTileSize(), 0, 0);
 		tileMap.setTween(1);
 
-		player = new Player(tileMap);
-		player.setPosition(160, 120);
-		player.setHealth(3);
-		player.setTime(0);
-
 		enemies = new ArrayList<Enemy>();
 		// eprojectiles = new ArrayList<EnemyProjectile>();
 		populateEnemies();
@@ -68,8 +65,14 @@ public class Level1State extends GameState {
 		missiles = new ArrayList<Missile>();
 		explosions = new ArrayList<Explosion>();
 
-		JukeBox.stop();
-		JukeBox.play("Resources/music/level1boss.mp3");
+		if (!alreadyplayed) {
+			player = new Player(tileMap);
+			player.setPosition(160, 120);
+			player.setHealth(3);
+			player.setTime(0);
+			JukeBox.stop();
+			JukeBox.play("Resources/music/level1boss.mp3");
+		}
 
 		player.setFlinching(true);
 	}
@@ -105,6 +108,7 @@ public class Level1State extends GameState {
 				currStage = 0;
 			} else {
 				currStage++;
+				alreadyplayed = true;
 				init();
 			}
 		}
@@ -118,7 +122,7 @@ public class Level1State extends GameState {
 	}
 
 	public void checkCollisions() {
-		Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety() - 15, player.getWidth() - 15,
+		Rectangle rplayer = new Rectangle(player.getx() - 10, player.gety(), player.getWidth() - 10,
 				player.getHeight() - 10);
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
@@ -143,12 +147,9 @@ public class Level1State extends GameState {
 			Missile m = missiles.get(i);
 			for (int j = 0; j < enemies.size(); j++) {
 				Stone s = (Stone) enemies.get(j);
-				double d = Line2D.ptSegDistSq(m.missilestartx, m.missilestarty, m.missileendx, m.missileendy,
-						s.getx() + 10, s.gety() + 10);
-				System.out.println("start x: " + m.missilestartx + " end x: " + m.missileendx + " start y: "
-						+ m.missilestarty + " end y: " + m.missileendy);
-				System.out.println(d);
-				if (Math.abs(d) < s.getRadius() * 5) {
+				double d = Line2D.ptSegDistSq(m.missilestartx, m.missilestarty, m.missileendx, m.missileendy, s.getx(),
+						s.gety());
+				if (Math.abs(d) < s.getRadius()) {
 					enemies.remove(j);
 					missiles.remove(i);
 					SCORE++;
