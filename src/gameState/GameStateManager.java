@@ -21,6 +21,7 @@ public class GameStateManager {
 	 */
 	public static final int LEVEL1STATE = 2;
 	public static final int GAMEOVERSTATE = 3;
+	public static final int SHIPSTATE = 4;
 
 	public GameStateManager() {
 
@@ -45,6 +46,8 @@ public class GameStateManager {
 			gameStates[state] = new OptionState(this);
 		else if (state == GAMEOVERSTATE)
 			gameStates[state] = new GameOverState(this);
+		else if (state == SHIPSTATE)
+			gameStates[state] = new ShipState(this);
 	}
 
 	private void unloadState(int state) {
