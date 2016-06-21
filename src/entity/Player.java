@@ -47,22 +47,13 @@ public class Player extends MapObject {
 			} else {
 				spritesheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites3.gif"));
 			}
-			// choosing missiles
-			b = new BufferedReader(new FileReader("Resources/Options/missileSetting.txt"));
-			if (b.readLine().equals("0")) {
-				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
-			} else if (b.readLine().equals("1")) {
-				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
-			} else if (b.readLine().equals("2")) {
-				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/missile3.gif"));
-			}
 
 			int count = 0;
 			sprites = new ArrayList<BufferedImage[]>();
 			for (int i = 0; i < NUMFRAMES.length; i++) {
 				BufferedImage[] bi = new BufferedImage[NUMFRAMES[i]];
 				for (int j = 0; j < NUMFRAMES[i]; j++) {
-					bi[j] = spritesheet.getSubimage(j * FRAMEWIDTHS[i], count, FRAMEWIDTHS[i], FRAMEHEIGHTS[i]);
+					bi[j] = spritesheet.getSubimage(j * FRAMEWIDTHS[0], count, FRAMEWIDTHS[0], FRAMEHEIGHTS[0]);
 				}
 				sprites.add(bi);
 				count += FRAMEHEIGHTS[i];

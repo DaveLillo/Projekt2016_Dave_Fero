@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -17,9 +19,20 @@ public class Missile extends MapObject {
 	public double missileendx;
 	public double missileendy;
 
+	@SuppressWarnings("resource")
 	public Missile(int rotation, Player player) {
 		try {
-			missile = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
+			BufferedReader b = new BufferedReader(new FileReader("Resources/Options/missileSetting.txt"));
+			String s = b.readLine();
+			if (s.equals("0")) {
+				missile = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
+			} else if (s.equals("1")) {
+				missile = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
+			} else if (s.equals("2")) {
+				missile = ImageIO.read(getClass().getResourceAsStream("/HUD/missile3.gif"));
+			} else {
+				missile = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -43,7 +43,7 @@ public class ShipState extends GameState {
 			ship2 = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites3.gif"));
 			missile1 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile.gif"));
 			missile2 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
-			missile3 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
+			missile3 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile3.gif"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class ShipState extends GameState {
 				}
 			}
 			// missile writing out
-			if (chosenShip == 0) {
+			if (chosenMissile == 0) {
 				try {
 					fos = new FileOutputStream("Resources/Options/missileSetting.txt");
 					fos.write("0".getBytes());
