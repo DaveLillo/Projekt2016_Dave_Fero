@@ -3,6 +3,8 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -60,8 +62,23 @@ public class Player extends MapObject {
 		health = maxHealth = 1;
 
 		try {
-			BufferedImage spritesheet = ImageIO
-					.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites.gif"));
+			@SuppressWarnings("resource")
+			BufferedReader b = new BufferedReader(new FileReader("Resources/Options/shipSettings.txt"));
+			BufferedImage spritesheet = null;
+			if (b.readLine().equals("shipNR0")) {
+				spritesheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites.gif"));
+			} else {
+				spritesheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites3.gif"));
+			}
+			// choosing missiles
+			b = new BufferedReader(new FileReader("Resources/Options/missileSetting.txt"));
+			if (b.readLine().equals("0")) {
+				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
+			} else if (b.readLine().equals("1")) {
+				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
+			} else if (b.readLine().equals("2")) {
+				spritesheet = ImageIO.read(getClass().getResourceAsStream("/HUD/missile3.gif"));
+			}
 
 			int count = 0;
 			sprites = new ArrayList<BufferedImage[]>();

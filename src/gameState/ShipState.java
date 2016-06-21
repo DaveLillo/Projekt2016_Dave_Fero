@@ -21,6 +21,7 @@ public class ShipState extends GameState {
 
 	private BufferedImage missile1;
 	private BufferedImage missile2;
+	private BufferedImage missile3;
 
 	private int chosenShip;
 	private int chosenMissile;
@@ -42,6 +43,7 @@ public class ShipState extends GameState {
 			ship2 = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites3.gif"));
 			missile1 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile.gif"));
 			missile2 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
+			missile3 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +56,7 @@ public class ShipState extends GameState {
 		ships.add(ship2);
 		missiles.add(missile1);
 		missiles.add(missile2);
+		missiles.add(missile3);
 	}
 
 	public void select() {// hier weiter machen
@@ -62,6 +65,27 @@ public class ShipState extends GameState {
 			if (chosenShip == 0) {
 				try {
 					fos = new FileOutputStream("Resources/Options/shipSettings.txt");
+					fos.write("shipNR0".getBytes());
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			} else if (chosenShip == 1) {
+				try {
+					fos = new FileOutputStream("Resources/Options/shipSettings.txt");
+					fos.write("shipNR1".getBytes());
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			// missile writing out
+			if (chosenShip == 0) {
+				try {
+					fos = new FileOutputStream("Resources/Options/missileSetting.txt");
 					fos.write("0".getBytes());
 					fos.flush();
 					fos.close();
@@ -69,10 +93,19 @@ public class ShipState extends GameState {
 					e.printStackTrace();
 				}
 
-			} else {
+			} else if (chosenMissile == 1) {
 				try {
-					fos = new FileOutputStream("Resources/Options/shipSettings.txt");
+					fos = new FileOutputStream("Resources/Options/missileSetting.txt");
 					fos.write("1".getBytes());
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (chosenMissile == 2) {
+				try {
+					fos = new FileOutputStream("Resources/Options/missileSetting.txt");
+					fos.write("2".getBytes());
 					fos.flush();
 					fos.close();
 				} catch (Exception e) {
@@ -121,7 +154,7 @@ public class ShipState extends GameState {
 	public void handleInput() {
 		if (Keys.isPressedShort(Keys.ESCAPE))
 			gsm.setState(GameStateManager.MENUSTATE);
-		if (Keys.isPressedShort(Keys.ENTER)) {
+		if (Keys.isPressedShort(Keys.ENTER) && currentOption == 2) {
 			gsm.setPaused(false);
 			select();
 			gsm.setState(GameStateManager.LEVEL1STATE);
