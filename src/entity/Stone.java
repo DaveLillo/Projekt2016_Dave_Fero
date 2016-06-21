@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import handlers.Content;
-import tileMap.TileMap;
 
 public class Stone extends Enemy {
 
@@ -13,8 +12,7 @@ public class Stone extends Enemy {
 	// 0 = links oben, 1 = links unten, 2 = rechts unten, 3 = rechts oben
 	private int dir;
 
-	public Stone(TileMap tm) {
-		super(tm);
+	public Stone() {
 		health = 3;
 		length = 30;
 		fatness = 30;

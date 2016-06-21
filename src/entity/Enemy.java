@@ -1,7 +1,5 @@
 package entity;
 
-import tileMap.TileMap;
-
 public class Enemy extends MapObject {
 
 	protected int health;
@@ -13,8 +11,7 @@ public class Enemy extends MapObject {
 	protected boolean flinching;
 	protected long flinchCount;
 
-	public Enemy(TileMap tm) {
-		super(tm);
+	public Enemy() {
 		remove = false;
 	}
 
