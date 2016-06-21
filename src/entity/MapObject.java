@@ -4,15 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import handlers.Keys;
-import tileMap.TileMap;
 
 public abstract class MapObject {
-
-	// tile stuff
-	protected TileMap tileMap;
-	protected int tileSize;
-	protected double xmap;
-	protected double ymap;
 
 	// position and vector
 	protected double x;
@@ -68,9 +61,7 @@ public abstract class MapObject {
 
 	protected boolean isPlayer;
 
-	public MapObject(TileMap tm) {
-		tileMap = tm;
-		tileSize = tm.getTileSize();
+	public MapObject() {
 		animation = new Animation();
 		facingRight = true;
 		rotation = 0;
@@ -187,8 +178,6 @@ public abstract class MapObject {
 	}
 
 	private void calculateDirection(boolean up, boolean slowDown) {
-		double a;
-		double b;
 		if (up) { // vorwärts
 
 			double unitx = Math.cos(Math.toRadians(rotation));

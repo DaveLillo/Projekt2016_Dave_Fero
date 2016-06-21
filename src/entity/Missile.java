@@ -8,8 +8,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import tileMap.TileMap;
-
 public class Missile extends MapObject {
 
 	public BufferedImage missile;
@@ -19,8 +17,7 @@ public class Missile extends MapObject {
 	public double missileendx;
 	public double missileendy;
 
-	public Missile(TileMap tm, int rotation, Player player) {
-		super(tm);
+	public Missile(int rotation, Player player) {
 		try {
 			missile = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
 		} catch (IOException e) {
@@ -74,8 +71,8 @@ public class Missile extends MapObject {
 	}
 
 	private void update() {
-		missilestartx = missileendx;
-		missilestarty = missileendy;
+		missilestartx = ((missileendx - missilestartx) / 2) + missilestartx;
+		missilestarty = ((missileendy - missilestarty) / 2) + missilestarty;
 
 		calculate();
 	}

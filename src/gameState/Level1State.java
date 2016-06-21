@@ -12,24 +12,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import entity.Enemy;
-import entity.Explosion;
 import entity.Missile;
 import entity.Player;
 import entity.Stone;
 import handlers.Background;
 import handlers.Keys;
 import music.JukeBox;
-import spiel.GamePanel;
-import tileMap.TileMap;
 
 public class Level1State extends GameState {
 
 	private Background stars;
 
 	private Player player;
-	private TileMap tileMap;
 	private ArrayList<Enemy> enemies;
-	private ArrayList<Explosion> explosions;
 	private ArrayList<Missile> missiles;
 
 	private boolean blockInput = false;
@@ -50,26 +45,16 @@ public class Level1State extends GameState {
 	public void init() {
 		stars = new Background("/Backgrounds/stars.gif", 0);
 
-		tileMap = new TileMap(30);
-		tileMap.loadTiles("/Tilesets/empty.gif");
-		// tileMap.loadMap("/Maps/empty.map");
-		tileMap.setPosition(140, 0);
-		tileMap.setBounds(tileMap.getWidth() - 1 * tileMap.getTileSize(),
-				tileMap.getHeight() - 2 * tileMap.getTileSize(), 0, 0);
-		tileMap.setTween(1);
-
 		enemies = new ArrayList<Enemy>();
 		// eprojectiles = new ArrayList<EnemyProjectile>();
 		populateEnemies();
 
 		missiles = new ArrayList<Missile>();
-		explosions = new ArrayList<Explosion>();
 
 		if (!alreadyplayed) {
-			player = new Player(tileMap);
+			player = new Player();
 			player.setPosition(160, 120);
 			player.setHealth(3);
-			player.setTime(0);
 			JukeBox.stop();
 			JukeBox.play("Resources/music/level1boss.mp3");
 		}
@@ -82,7 +67,7 @@ public class Level1State extends GameState {
 		Random r = new Random();
 
 		for (int i = 0; i < currStage + 3; i++) {
-			s = new Stone(tileMap);
+			s = new Stone();
 			s.setPosition(r.nextInt(280), r.nextInt(200));
 			enemies.add(s);
 		}
@@ -91,15 +76,7 @@ public class Level1State extends GameState {
 	public void update() {
 		handleInput();
 
-		if (player.getHealth() == 1 || player.gety() > tileMap.getHeight()) {
-			// eventDead = blockInput = true;
-		}
-
 		player.update();
-
-		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
-		tileMap.update();
-		tileMap.fixBounds();
 
 		checkCollisions();
 
@@ -149,7 +126,7 @@ public class Level1State extends GameState {
 				Stone s = (Stone) enemies.get(j);
 				double d = Line2D.ptSegDistSq(m.missilestartx, m.missilestarty, m.missileendx, m.missileendy, s.getx(),
 						s.gety());
-				if (Math.abs(d) < s.getRadius()) {
+				if (Math.abs(d) < s.getRadius() * 5) {
 					enemies.remove(j);
 					missiles.remove(i);
 					SCORE++;
@@ -174,8 +151,6 @@ public class Level1State extends GameState {
 		 * System.out.println("collision"); enemies.remove(i); } }
 		 */
 
-		tileMap.draw(g);
-
 		g.setColor(Color.WHITE);
 
 		for (int i = 0; i < enemies.size(); i++) {
@@ -184,10 +159,6 @@ public class Level1State extends GameState {
 
 		for (int i = 0; i < missiles.size(); i++) {
 			missiles.get(i).draw(g);
-		}
-
-		for (int i = 0; i < explosions.size(); i++) {
-			explosions.get(i).draw(g);
 		}
 
 		player.draw(g);
@@ -223,7 +194,7 @@ public class Level1State extends GameState {
 			player.setRight(Keys.keyState[Keys.D]);
 		}
 		if (Keys.isPressedShort(Keys.SPACE)) {
-			missiles.add(new Missile(tileMap, player.getRotation(), player));
+			missiles.add(new Missile(player.getRotation(), player));
 		}
 
 	}

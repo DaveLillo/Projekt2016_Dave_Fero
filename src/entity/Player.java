@@ -1,49 +1,27 @@
 package entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import tileMap.TileMap;
-
 public class Player extends MapObject {
 
-	private int lives;
 	private int health;
-	private int maxHealth;
 	private boolean flinching;
 	private long flinchCount;
 	private int score;
-	private long time;
-
-	private boolean attacking;
-
 	private ArrayList<BufferedImage[]> sprites;
 	private final int[] NUMFRAMES = { 1 };
 	private final int[] FRAMEWIDTHS = { 30 };
 	private final int[] FRAMEHEIGHTS = { 30 };
 	private final int[] SPRITEDELAYS = { -1 };
 
-	private Rectangle ar;
-	private Rectangle cr;
-
 	private static final int IDLE = 0;
 
-	public Player(TileMap tm) {
-		super(tm);
-
+	public Player() {
 		isPlayer = true;
-
-		ar = new Rectangle(0, 0, 0, 0);
-		ar.width = 30;
-		ar.height = 20;
-		// aur = new Rectangle((int) x - 15, (int) y - 45, 30, 30);
-		cr = new Rectangle(0, 0, 0, 0);
-		cr.width = 50;
-		cr.height = 40;
 
 		length = 30;
 		fatness = 30;
@@ -56,8 +34,7 @@ public class Player extends MapObject {
 
 		facingRight = true;
 
-		lives = 3;
-		health = maxHealth = 1;
+		health = 1;
 
 		try {
 			BufferedImage spritesheet = ImageIO
@@ -78,8 +55,6 @@ public class Player extends MapObject {
 		}
 
 		setAnimation(IDLE);
-		// set energy particles
-		// load sfx
 	}
 
 	public int getHealth() {
@@ -90,51 +65,8 @@ public class Player extends MapObject {
 		this.rotation = rotation;
 	}
 
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public void setAttacking() {
-		attacking = true;
-	}
-
-	public void setDead() {
-		health = 0;
-		stop();
-	}
-
-	public String getTimeToString() {
-		int minutes = (int) (time / 3600);
-		int seconds = (int) ((time % 3600) / 60);
-		return seconds < 10 ? minutes + ":0" + seconds : minutes + ":" + seconds;
-	}
-
-	public long getTime() {
-		return time;
-	}
-
-	public void setTime(long t) {
-		time = t;
-	}
-
 	public void setHealth(int i) {
 		health = i;
-	}
-
-	public void setLives(int i) {
-		lives = i;
-	}
-
-	public void gainLife() {
-		lives++;
-	}
-
-	public void loseLife() {
-		lives--;
-	}
-
-	public int getLives() {
-		return lives;
 	}
 
 	public void increaseScore(int score) {
@@ -153,68 +85,7 @@ public class Player extends MapObject {
 		fatness = FRAMEHEIGHTS[currentAction];
 	}
 
-	public void hit(int damage) {
-		if (flinching)
-			return;
-		// JukeBox.play("playerhit");
-		stop();
-		health -= damage;
-		if (health < 0)
-			health = 0;
-		flinching = true;
-		flinchCount = 0;
-		dy = -3;
-	}
-
-	public void reset() {
-		health = maxHealth;
-		currentAction = -1;
-		stop();
-	}
-
-	public void stop() {
-		left = right = up = down = flinching = attacking = false;
-	}
-
-	private void getNextPosition() {
-		if (left) {
-			dx -= moveSpeed;
-			if (dx < -maxSpeed) {
-				dx = -maxSpeed;
-			}
-		} else if (right) {
-			dx += moveSpeed;
-			if (dx > maxSpeed) {
-				dx = maxSpeed;
-			}
-		} else {
-			if (dx > 0) {
-				dx -= stopSpeed;
-				if (dx < 0) {
-					dx = 0;
-				}
-			} else if (dx < 0) {
-				dx += stopSpeed;
-				if (dx > 0) {
-					dx = 0;
-				}
-			}
-		}
-
-		if (attacking) {
-			dx = 0;
-		}
-	}
-
 	public void update() {
-
-		time++;
-
-		getNextPosition();
-
-		if (dx == 0) {
-			x = (int) x;
-		}
 
 		if (flinching) {
 			flinchCount++;
@@ -227,13 +98,6 @@ public class Player extends MapObject {
 		setAnimation(IDLE);
 
 		animation.update();
-
-		facingRight = true;
-
-		// check if attacking, set bool attacking
-
-		// check enemy interaction, collision, isDead...
-
 	}
 
 	public int getRotation() {
