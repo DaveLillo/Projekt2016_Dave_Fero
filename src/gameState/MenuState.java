@@ -51,7 +51,7 @@ public class MenuState extends GameState {
 				soundOptions = true;
 			}
 			JukeBox.stop();
-			JukeBox.play("Resources/music/level1v2.mp3");
+			JukeBox.play("/music/level1v2.mp3");
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,9 +1,7 @@
 package music;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 
 import ddf.minim.Minim;
 import gameState.MenuState;
@@ -14,11 +12,11 @@ public class JukeBox {
 
 	public static class MinimHelper {
 		public String sketchPath(String fileName) {
-			return Paths.get(fileName).toAbsolutePath().toString();
+			return fileName;
 		}
 
 		public InputStream createInput(String fileName) throws FileNotFoundException {
-			return new FileInputStream(sketchPath(fileName));
+			return JukeBox.class.getResourceAsStream(sketchPath(fileName));
 		}
 	}
 

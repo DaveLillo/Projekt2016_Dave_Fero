@@ -56,7 +56,7 @@ public class Level1State extends GameState {
 			player.setPosition(160, 120);
 			player.setHealth(3);
 			JukeBox.stop();
-			JukeBox.play("Resources/music/level1boss.mp3");
+			JukeBox.play("/music/level1boss.mp3");
 		}
 
 		player.setFlinching(true);

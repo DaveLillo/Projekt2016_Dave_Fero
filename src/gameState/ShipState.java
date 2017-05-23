@@ -41,7 +41,7 @@ public class ShipState extends GameState {
 		try {
 			ship = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites.gif"));
 			ship2 = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/PlayerSprites3.gif"));
-			missile1 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile.gif"));
+			missile1 = ImageIO.read(getClass().getResourceAsStream("/HUD/Missile.gif"));
 			missile2 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile2.gif"));
 			missile3 = ImageIO.read(getClass().getResourceAsStream("/HUD/missile3.gif"));
 
